@@ -1,50 +1,28 @@
-<app-page-header title="Sản phẩm" subtitle="Theo dõi danh mục, giá bán và tồn kho" />
-
-<app-data-table
-  [data]="products()"
+<app-crud-page
+  title="Sản phẩm"
+  subtitle="Theo dõi danh mục, giá bán và tồn kho"
+  entityName="sản phẩm"
+  formMode="inline_form"
+  [service]="service"
   [columns]="columns"
-  [filters]="filters()"
-  [actions]="actions"
-  [primaryAction]="primaryAction"
-  [loading]="loading()"
-/>
-
-<nz-modal
-  [(nzVisible)]="modalOpen"
-  [nzTitle]="editingId() ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'"
-  nzOkText="Lưu"
-  nzCancelText="Hủy"
-  [nzMaskClosable]="false"
-  [nzOkLoading]="saving()"
-  (nzOnOk)="submit()"
-  (nzOnCancel)="modalOpen.set(false)"
+  [filters]="filters"
+  [fields]="fields"
+  [pageActions]="pageActions"
 >
-  <ng-container *nzModalContent>
-    <form nz-form nzLayout="vertical" [formGroup]="form">
-      <nz-form-item>
-        <nz-form-label nzRequired nzFor="name">Tên sản phẩm</nz-form-label>
-        <nz-form-control nzErrorTip="Vui lòng nhập tên sản phẩm">
-          <input nz-input id="name" formControlName="name" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzRequired nzFor="category">Danh mục</nz-form-label>
-        <nz-form-control nzErrorTip="Vui lòng nhập danh mục">
-          <input nz-input id="category" formControlName="category" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzRequired nzFor="price">Giá (VNĐ)</nz-form-label>
-        <nz-form-control nzErrorTip="Giá phải lớn hơn hoặc bằng 0">
-          <nz-input-number nzId="price" formControlName="price" [nzMin]="0" [nzStep]="1000" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzRequired nzFor="stock">Tồn kho</nz-form-label>
-        <nz-form-control nzErrorTip="Tồn kho phải lớn hơn hoặc bằng 0">
-          <nz-input-number nzId="stock" formControlName="stock" [nzMin]="0" />
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  </ng-container>
-</nz-modal>
+  <!-- Field custom "category": gợi ý danh mục có sẵn nhưng vẫn cho nhập danh mục mới.
+       Vị trí, nhãn, span và validate lấy từ khai báo trong mảng fields của product-list.ts. -->
+  <ng-template appCrudField="category" let-control let-id="id">
+    <input
+      nz-input
+      placeholder="Chọn hoặc nhập danh mục"
+      [id]="id"
+      [formControl]="control"
+      [nzAutocomplete]="categoryAuto"
+    />
+    <nz-autocomplete #categoryAuto>
+      @for (category of categorySuggestions(control.value); track category) {
+        <nz-auto-option [nzValue]="category" [nzLabel]="category">{{ category }}</nz-auto-option>
+      }
+    </nz-autocomplete>
+  </ng-template>
+</app-crud-page>

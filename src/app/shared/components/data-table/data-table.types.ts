@@ -10,6 +10,8 @@ export interface TableColumn<T> {
   type?: ColumnType;
   width?: string;
   align?: ColumnAlign;
+  /** Cố định cột bên trái khi bảng cuộn ngang. Mặc định không cố định. Nên khai báo cho các cột liền nhau từ đầu bảng. */
+  fixed?: boolean;
   /** `text`: hiện avatar chữ cái đầu bên cạnh giá trị. */
   avatar?: boolean;
   /** `text`: dòng phụ hiển thị bên dưới giá trị (ví dụ email dưới tên). */
@@ -33,7 +35,8 @@ export interface TableFilter<T> {
   /** Dùng làm placeholder và nhãn accessibility. */
   label: string;
   type: 'text' | 'select' | 'number';
-  options?: FilterOption[];
+  /** Danh sách lựa chọn, hoặc hàm sinh lựa chọn từ dữ liệu đang có. */
+  options?: FilterOption[] | ((rows: T[]) => FilterOption[]);
   /** `text`: các field cần tìm (chứa, không phân biệt hoa thường). Mặc định là `key`. */
   searchKeys?: (keyof T & string)[];
   /** Tự định nghĩa điều kiện lọc, ghi đè cách so sánh mặc định. */
@@ -47,13 +50,5 @@ export interface TableAction<T> {
   /** Hiện khi rê chuột và dùng làm aria-label. */
   tooltip: string;
   danger?: boolean;
-  /** Nếu có, hiện hộp xác nhận với nội dung này trước khi chạy `handler`. */
-  confirm?: string;
   handler: (row: T) => void;
-}
-
-export interface TablePrimaryAction {
-  label: string;
-  icon?: string;
-  handler: () => void;
 }

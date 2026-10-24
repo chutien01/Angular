@@ -1,0 +1,65 @@
+<div class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+  <app-page-header
+    class="block shrink-0 px-6 py-4"
+    [title]="title()"
+    [subtitle]="subtitle()"
+    [current]="breadcrumbCurrent()"
+  >
+    <!-- Ẩn khi đang mở form inline: lúc đó chỉ dùng các nút của form -->
+    @if (!inlineFormOpen()) {
+      @for (action of pageActions(); track action.label) {
+        <button
+          nz-button
+          [nzType]="action.type ?? 'default'"
+          [nzDanger]="action.danger ?? false"
+          (click)="runPageAction(action)"
+        >
+          @if (action.icon) {
+            <nz-icon [nzType]="action.icon" />
+          }
+          {{ action.label }}
+        </button>
+      }
+    }
+  </app-page-header>
+
+  <!-- Ẩn thay vì hủy bảng khi mở form inline để giữ nguyên bộ lọc và trang hiện tại -->
+  <app-data-table
+    [style.display]="inlineFormOpen() ? 'none' : null"
+    [data]="data()"
+    [columns]="columns()"
+    [filters]="filters()"
+    [actions]="actions"
+    [loading]="loading()"
+  />
+
+  @if (inlineFormOpen()) {
+    <app-crud-form
+      mode="inline_form"
+      [fields]="fields()"
+      [action]="formState()?.action ?? null"
+      [value]="formState()?.row ?? null"
+      [entityName]="entityName()"
+      [saving]="saving()"
+      [viewReadonly]="viewReadonly()"
+      [fieldTemplates]="fieldTemplates()"
+      (save)="save($event)"
+      (closed)="close()"
+    />
+  }
+</div>
+
+@if (formMode() === 'modal_form') {
+  <app-crud-form
+    mode="modal_form"
+    [fields]="fields()"
+    [action]="formState()?.action ?? null"
+    [value]="formState()?.row ?? null"
+    [entityName]="entityName()"
+    [saving]="saving()"
+    [viewReadonly]="viewReadonly()"
+    [fieldTemplates]="fieldTemplates()"
+    (save)="save($event)"
+    (closed)="close()"
+  />
+}

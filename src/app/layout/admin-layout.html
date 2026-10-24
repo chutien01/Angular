@@ -1,0 +1,105 @@
+<nz-layout class="app-shell">
+  <nz-header class="app-header">
+    <div class="flex items-center gap-3">
+      <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-blue-700 text-lg text-white">
+        <nz-icon nzType="appstore" />
+      </span>
+      <span class="text-base font-semibold text-slate-900">Angular Base</span>
+    </div>
+
+    <div class="flex items-center gap-5">
+      <nz-badge [nzCount]="3" [nzOffset]="[2, 2]">
+        <button
+          type="button"
+          class="cursor-pointer border-0 bg-transparent text-lg text-slate-600"
+          aria-label="Thông báo"
+        >
+          <nz-icon nzType="bell" />
+        </button>
+      </nz-badge>
+
+      <button
+        type="button"
+        class="flex cursor-pointer items-center gap-2 border-0 bg-transparent"
+        nz-dropdown
+        [nzDropdownMenu]="userMenu"
+        nzPlacement="bottomRight"
+      >
+        <nz-avatar class="avatar-soft" nzText="QT" />
+        <span class="font-medium text-slate-700">Quản trị viên</span>
+        <nz-icon nzType="down" class="text-xs text-slate-500" />
+      </button>
+      <nz-dropdown-menu #userMenu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item><nz-icon nzType="user" /> Hồ sơ</li>
+          <li nz-menu-item><nz-icon nzType="setting" /> Cài đặt</li>
+          <li nz-menu-divider></li>
+          <li nz-menu-item nzDanger><nz-icon nzType="logout" /> Đăng xuất</li>
+        </ul>
+      </nz-dropdown-menu>
+    </div>
+  </nz-header>
+
+  <nz-layout class="app-body">
+    <nz-sider class="app-sider" nzTheme="light" [nzWidth]="240" [nzCollapsed]="collapsed()" [nzTrigger]="null">
+      <div class="flex h-full flex-col">
+        <!-- Ô tìm menu (Enter để tìm) + nút thu gọn ở góc phải trên -->
+        <div class="flex shrink-0 items-center gap-2 p-3" [class.justify-center]="collapsed()">
+          @if (!collapsed()) {
+            <div class="min-w-0 flex-1">
+              <nz-input-wrapper nzAllowClear (nzClear)="clearMenuSearch()">
+                <nz-icon nzInputPrefix nzType="search" />
+                <input
+                  nz-input
+                  placeholder="Tìm menu"
+                  aria-label="Tìm kiếm menu"
+                  [ngModel]="menuDraft()"
+                  (ngModelChange)="menuDraft.set($event)"
+                  (keydown.enter)="searchMenu()"
+                />
+              </nz-input-wrapper>
+            </div>
+          }
+          <button
+            nz-button
+            nz-tooltip
+            nzTooltipPlacement="right"
+            [nzTooltipTitle]="toggleLabel()"
+            [attr.aria-label]="toggleLabel()"
+            [attr.aria-expanded]="!collapsed()"
+            (click)="collapsed.set(!collapsed())"
+          >
+            <nz-icon [nzType]="collapsed() ? 'arrow-right' : 'arrow-left'" />
+          </button>
+        </div>
+
+        <ul
+          nz-menu
+          nzTheme="light"
+          nzMode="inline"
+          class="min-h-0 flex-1 overflow-y-auto pb-2"
+          [nzInlineCollapsed]="collapsed()"
+        >
+          @for (item of menuItems(); track item.route) {
+            <li nz-menu-item nzMatchRouter [routerLink]="item.route">
+              <nz-icon [nzType]="item.icon" />
+              <span>{{ item.label }}</span>
+            </li>
+          }
+        </ul>
+        @if (!menuItems().length && !collapsed()) {
+          <p class="m-0 px-4 pb-4 text-sm text-slate-600">Không tìm thấy menu phù hợp</p>
+        }
+      </div>
+    </nz-sider>
+
+    <nz-content class="app-content p-6">
+      <router-outlet />
+    </nz-content>
+  </nz-layout>
+
+  <!-- Footer rộng toàn màn hình như header; khoảng cách phía trên lấy từ padding của vùng nội dung -->
+  <nz-footer class="app-footer text-sm">
+    <span>© 2026 Angular Base Admin. All rights reserved.</span>
+  </nz-footer>
+</nz-layout>

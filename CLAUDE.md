@@ -29,9 +29,11 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use `model()` for two-way bound properties with `[(prop)]` syntax instead of pairing `input()` with `output()`
 - Use `computed()` for derived state
 - Use `linkedSignal()` for state derived from multiple reactive sources that must stay synchronized
-- Prefer inline templates for small components
-- Prefer Signal Forms (`@angular/forms/signals`) for new forms. They are stable in Angular v22+ and provide signal-based state, type-safe field access, and schema-based validation
-- When not using Signal Forms, prefer Reactive forms instead of Template-driven ones
+- Every component MUST have its own `.ts` and `.html` files — never use inline `template`, even for small components. Add a `.scss` file (via `styleUrl`) only when the component has its own styles; never use inline `styles`. Put a component with more than one file in its own folder (e.g. `shared/components/data-table/`)
+- Choose the forms API by complexity:
+  - Simple forms (a few fields, basic validation — e.g. login, change password, profile settings): use Signal Forms (`@angular/forms/signals`). They are stable in Angular v22+ and provide signal-based state, type-safe field access, and schema-based validation
+  - Complex forms with heavy logic (dependent fields, cross-field validation, dynamically generated fields): use Reactive Forms. The shared config-driven `app-crud-form` component falls in this group and stays on Reactive Forms
+  - Prefer either of the above over Template-driven forms
 - Do NOT use `ngClass`, use `class` bindings instead
 - Do NOT use `ngStyle`, use `style` bindings instead
 - Do NOT import `CommonModule`, import only the directives and pipes the template uses, such as `AsyncPipe` or `DatePipe`

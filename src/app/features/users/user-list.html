@@ -1,54 +1,12 @@
-<app-page-header title="Người dùng" subtitle="Quản lý tài khoản và phân quyền truy cập hệ thống" />
-
-<app-data-table
-  [data]="users()"
+<app-crud-page
+  title="Người dùng"
+  subtitle="Quản lý tài khoản và phân quyền truy cập hệ thống"
+  entityName="người dùng"
+  formMode="modal_form"
+  [service]="service"
   [columns]="columns"
   [filters]="filters"
-  [actions]="actions"
-  [primaryAction]="primaryAction"
-  [loading]="loading()"
+  [fields]="fields"
+  [pageActions]="pageActions"
+  [viewReadonly]="true"
 />
-
-<nz-modal
-  [(nzVisible)]="modalOpen"
-  [nzTitle]="editingId() ? 'Cập nhật người dùng' : 'Thêm người dùng'"
-  nzOkText="Lưu"
-  nzCancelText="Hủy"
-  [nzMaskClosable]="false"
-  [nzOkLoading]="saving()"
-  (nzOnOk)="submit()"
-  (nzOnCancel)="modalOpen.set(false)"
->
-  <ng-container *nzModalContent>
-    <form nz-form nzLayout="vertical" [formGroup]="form">
-      <nz-form-item>
-        <nz-form-label nzRequired nzFor="name">Họ tên</nz-form-label>
-        <nz-form-control nzErrorTip="Vui lòng nhập họ tên">
-          <input nz-input id="name" formControlName="name" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzRequired nzFor="email">Email</nz-form-label>
-        <nz-form-control nzErrorTip="Email không hợp lệ">
-          <input nz-input id="email" type="email" formControlName="email" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzRequired nzFor="role">Vai trò</nz-form-label>
-        <nz-form-control>
-          <nz-select nzId="role" formControlName="role">
-            @for (role of roles; track role) {
-              <nz-option [nzValue]="role" [nzLabel]="role" />
-            }
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="active">Hoạt động</nz-form-label>
-        <nz-form-control>
-          <nz-switch nzId="active" formControlName="active" />
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  </ng-container>
-</nz-modal>

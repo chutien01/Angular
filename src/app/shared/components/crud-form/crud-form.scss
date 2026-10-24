@@ -1,0 +1,51 @@
+// modal_form: host không chiếm chỗ trong layout (nội dung nằm trong modal).
+// inline_form: giãn đầy phần chiều cao còn lại của card để chỉ vùng field cuộn.
+:host {
+  display: contents;
+}
+
+:host(.inline-form) {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-height: 0;
+}
+
+// Lưới 24 cột cho field của form: mỗi ô chiếm `--crud-span` cột (đặt từ cấu hình `span`).
+// Khoảng cách giữa các cột tạo bằng padding của ô (không dùng column-gap) để lưới không bị
+// ép bề rộng tối thiểu. Khung form hẹp (< 560px, đo theo khung chứa chứ không theo màn hình)
+// thì mọi field chiếm trọn hàng.
+.crud-fields {
+  container-type: inline-size;
+}
+
+.crud-grid {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  margin-inline: -12px;
+}
+
+.crud-cell {
+  grid-column: span 24;
+  min-width: 0;
+  padding-inline: 12px;
+
+  @container (min-width: 560px) {
+    grid-column: span var(--crud-span, 12);
+  }
+}
+
+// Chế độ xem chỉ đọc: đường kẻ dưới mỗi field, thụt vào theo padding để các cột không dính nhau.
+// Dùng pseudo-element để <dl> vẫn đúng cấu trúc dl > div > dt + dd.
+.crud-readonly-cell {
+  position: relative;
+  padding-block: 12px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: 12px;
+    bottom: 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+}

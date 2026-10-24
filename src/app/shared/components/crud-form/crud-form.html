@@ -1,0 +1,124 @@
+<ng-template #fieldsTpl>
+  <div class="crud-fields">
+    @if (showReadonly()) {
+      <!-- Chỉ đọc: hiển thị văn bản thuần (không phải ô nhập bị vô hiệu hóa) -->
+      <dl class="crud-grid">
+        @for (item of readonlyItems(); track item.key) {
+          <div class="crud-cell crud-readonly-cell" [style.--crud-span]="item.span">
+            <dt class="text-sm text-slate-600">{{ item.label }}</dt>
+            <dd class="m-0 mt-1 font-medium wrap-break-word text-slate-900">{{ item.text }}</dd>
+          </div>
+        }
+      </dl>
+    } @else {
+      <!-- Lưới 24 cột: mỗi field chiếm "span" cột (mặc định 12), thứ tự theo mảng fields -->
+      <form nz-form nzLayout="vertical" class="crud-grid" [formGroup]="form()">
+        @for (field of fields(); track field.key) {
+          <div class="crud-cell" [style.--crud-span]="spanOf(field)">
+            <nz-form-item>
+              <nz-form-label [nzRequired]="!!field.required" [nzFor]="idOf(field)">{{
+                field.label
+              }}</nz-form-label>
+              <!-- Truyền control trực tiếp để field custom (render từ template ngoài) vẫn hiển thị lỗi -->
+              <nz-form-control [nzErrorTip]="errorTpl" [nzValidateStatus]="controlOf(field)">
+                @switch (field.type) {
+                  @case ('custom') {
+                    @if (fieldTemplates()[field.key]; as template) {
+                      <ng-container
+                        [ngTemplateOutlet]="template"
+                        [ngTemplateOutletContext]="contextOf(field)"
+                      />
+                    } @else {
+                      <span class="text-sm text-red-700"
+                        >Thiếu &lt;ng-template appCrudField="{{ field.key }}"&gt;</span
+                      >
+                    }
+                  }
+                  @case ('textarea') {
+                    <textarea
+                      nz-input
+                      rows="4"
+                      [id]="idOf(field)"
+                      [formControlName]="field.key"
+                      [placeholder]="field.placeholder ?? ''"
+                    ></textarea>
+                  }
+                  @case ('number') {
+                    <nz-input-number
+                      [nzId]="idOf(field)"
+                      [formControlName]="field.key"
+                      [nzMin]="field.min ?? numberMin"
+                      [nzMax]="field.max ?? numberMax"
+                      [nzStep]="field.step ?? 1"
+                      [nzPlaceHolder]="field.placeholder ?? ''"
+                    />
+                  }
+                  @case ('select') {
+                    <nz-select
+                      [nzId]="idOf(field)"
+                      [formControlName]="field.key"
+                      [nzPlaceHolder]="field.placeholder ?? 'Chọn ' + field.label"
+                    >
+                      @for (option of field.options; track option.value) {
+                        <nz-option [nzValue]="option.value" [nzLabel]="option.label" />
+                      }
+                    </nz-select>
+                  }
+                  @case ('switch') {
+                    <nz-switch [nzId]="idOf(field)" [formControlName]="field.key" />
+                  }
+                  @default {
+                    <input
+                      nz-input
+                      [id]="idOf(field)"
+                      [type]="field.type === 'email' ? 'email' : 'text'"
+                      [formControlName]="field.key"
+                      [placeholder]="field.placeholder ?? ''"
+                    />
+                  }
+                }
+                <ng-template #errorTpl let-control>{{ errorText(field, control) }}</ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        }
+      </form>
+    }
+  </div>
+</ng-template>
+
+<ng-template #footerTpl>
+  @if (isView()) {
+    <button nz-button (click)="closed.emit()">Đóng</button>
+  } @else {
+    <button nz-button (click)="closed.emit()">Hủy</button>
+    <button nz-button nzType="primary" [nzLoading]="saving()" (click)="submit()">
+      {{ submitText() }}
+    </button>
+  }
+</ng-template>
+
+@if (mode() === 'modal_form') {
+  <nz-modal
+    nzCentered
+    nzClassName="crud-form-modal"
+    [nzVisible]="!!action()"
+    [nzTitle]="title()"
+    [nzWidth]="720"
+    [nzMaskClosable]="false"
+    [nzFooter]="footerTpl"
+    (nzOnCancel)="closed.emit()"
+  >
+    <ng-container *nzModalContent>
+      <ng-container [ngTemplateOutlet]="fieldsTpl" />
+    </ng-container>
+  </nz-modal>
+} @else {
+  <!-- Inline không có tiêu đề riêng: breadcrumb của trang đã hiển thị thao tác (Thêm mới / Cập nhật / Chi tiết) -->
+  <div class="min-h-0 flex-1 overflow-y-auto px-6 py-5">
+    <ng-container [ngTemplateOutlet]="fieldsTpl" />
+  </div>
+  <div class="flex shrink-0 justify-end gap-2 border-t border-slate-200 px-6 py-3">
+    <ng-container [ngTemplateOutlet]="footerTpl" />
+  </div>
+}

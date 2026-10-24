@@ -1,9 +1,18 @@
+/*
+ * Thứ tự layer: CSS của ng-zorro (antd) nằm trên preflight của Tailwind nhưng dưới utilities,
+ * để class Tailwind (m-0, flex, w-full, ...) luôn thắng style mặc định của ng-zorro.
+ * Các rule tùy biến bên dưới không nằm trong layer nào nên có ưu tiên cao nhất.
+ */
+@layer theme, base, antd, components, utilities;
+
 @import 'tailwindcss';
+@import 'ng-zorro-antd/ng-zorro-antd.variable.min.css' layer(antd);
 
 /* ---- Theme: dashboard doanh nghiệp (xanh navy) ---- */
 html {
   --ant-primary-color: #1d4ed8;
-  --ant-primary-color-hover: #3b82f6;
+  /* Hover đủ đậm để chữ trắng trên nút chính đạt tương phản AA */
+  --ant-primary-color-hover: #2563eb;
   --ant-primary-color-active: #1e40af;
   --ant-primary-color-outline: rgba(29, 78, 216, 0.15);
   --ant-primary-1: #eff6ff;
@@ -27,20 +36,17 @@ body {
   color: #0f172a;
 }
 
-/* ---- Bố cục: khung cố định theo viewport, chỉ vùng nội dung được cuộn khi cần ---- */
+/* ---- Bố cục: header rộng toàn màn hình, bên dưới là sidebar + nội dung; chỉ vùng bên trong được cuộn ---- */
 .ant-layout.app-shell {
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
 }
-.app-shell .ant-layout-sider {
-  overflow-y: auto;
-}
-.ant-layout.app-main {
-  min-width: 0;
+.ant-layout.app-body {
   min-height: 0;
 }
 .ant-layout-content.app-content {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -48,21 +54,36 @@ body {
 .ant-layout {
   background: #f1f5f9;
 }
-.ant-layout-sider.app-sider,
-.app-sider .ant-menu.ant-menu-dark,
-.app-sider .ant-menu-dark .ant-menu-sub {
-  background: #0f172a;
+
+/* ---- Sidebar trắng dạng card, cách header và mép màn hình giống card nội dung (24px) ---- */
+.ant-layout-sider.app-sider {
+  margin: 24px 0 24px 24px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
 }
-.app-sider .ant-menu-dark .ant-menu-item {
+.app-sider .ant-menu.ant-menu-inline,
+.app-sider .ant-menu.ant-menu-inline-collapsed {
+  border-right: 0;
+}
+.app-sider .ant-menu-item {
   margin: 4px 8px;
   width: calc(100% - 16px);
   border-radius: 6px;
+  color: #334155;
 }
-.app-sider .ant-menu-dark .ant-menu-item-selected {
-  background: var(--ant-primary-color);
+.app-sider .ant-menu-item::after {
+  display: none;
+}
+.app-sider .ant-menu-item.ant-menu-item-selected {
+  background: var(--ant-primary-1);
+  color: var(--ant-primary-color);
+  font-weight: 500;
 }
 /* Thu gọn: item vuông 48px nằm giữa sider 80px, icon canh giữa */
-.app-sider .ant-menu-dark.ant-menu-inline-collapsed .ant-menu-item {
+.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item {
   width: 48px;
   margin: 4px auto;
   padding: 0 !important;
@@ -70,21 +91,20 @@ body {
   align-items: center;
   justify-content: center;
 }
-.app-sider .ant-menu-dark.ant-menu-inline-collapsed .ant-menu-title-content {
+.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
 }
-.app-sider .ant-menu-dark.ant-menu-inline-collapsed .ant-menu-title-content > span {
+.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content > span {
   display: none;
 }
-.app-sider .ant-menu-dark.ant-menu-inline-collapsed .ant-menu-title-content nz-icon {
+.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content nz-icon {
   margin: 0;
   font-size: 18px;
 }
-.ant-layout-header.app-header,
-.ant-layout-footer.app-footer {
+.ant-layout-header.app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -97,7 +117,10 @@ body {
   border-bottom: 1px solid #e2e8f0;
 }
 .ant-layout-footer.app-footer {
-  padding: 16px 24px;
+  display: flex;
+  justify-content: center;
+  flex: none;
+  padding: 0 24px 16px;
   background: transparent;
   color: #475569;
 }
@@ -152,18 +175,12 @@ body {
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
-.ant-table-wrapper .ant-table-thead > tr > th:first-child,
-.ant-table-wrapper .ant-table-thead > tr > th:last-child {
-  border-radius: 0;
-}
 .ant-table-wrapper .ant-table-tbody > tr:hover > td {
   background: #f8fafc;
 }
-.ant-table-wrapper .ant-pagination {
-  padding: 0 16px;
-}
 
-/* ---- Bảng dùng chung: lấp đầy chiều cao còn lại, thân bảng cuộn, header và phân trang cố định ---- */
+/* ---- Bảng dùng chung: chiếm phần chiều cao còn lại; bảng (có viền) chỉ cao theo nội dung và tự cuộn
+   khi vượt chỗ trống; header bảng dính trên, phân trang luôn ở đáy ---- */
 .ant-table-wrapper.data-table,
 .data-table .ant-spin-nested-loading,
 .data-table .ant-spin-container,
@@ -178,13 +195,16 @@ body {
   min-height: 14rem;
 }
 .data-table .ant-spin-nested-loading,
-.data-table .ant-spin-container,
-.data-table .ant-table,
-.data-table .ant-table-container {
+.data-table .ant-spin-container {
   flex: 1 1 auto;
 }
+/* Không giãn theo chiều cao để khung viền không kéo dài xuống dưới các dòng dữ liệu */
+.data-table .ant-table,
+.data-table .ant-table-container {
+  flex: 0 1 auto;
+}
 .data-table .ant-table-content {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-height: 0;
   overflow: auto;
 }
@@ -193,9 +213,14 @@ body {
   top: 0;
   z-index: 2;
 }
+/* Ô tiêu đề của cột cố định: dính cả trên lẫn trái/phải nên phải nằm trên các ô cố định của thân bảng */
+.data-table .ant-table-thead > tr > th:is(.ant-table-cell-fix-left, .ant-table-cell-fix-right) {
+  z-index: 3;
+}
 .data-table .ant-table-pagination {
   flex: none;
-  padding: 0 16px;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 /* ---- Avatar chữ cái đầu ---- */
@@ -203,6 +228,26 @@ body {
   background: var(--ant-primary-2);
   color: var(--ant-primary-color);
   font-weight: 600;
+}
+
+/* ---- Field custom của crud-form: control khai báo trong trang không nhận trạng thái lỗi từ nz-form-control
+   (khác injector), nên tô viền lỗi theo form item để giống các field có sẵn ---- */
+.crud-cell
+  .ant-form-item-has-error
+  :is(.ant-input, .ant-input-affix-wrapper, .ant-input-number, .ant-picker, .ant-select:not(.ant-select-customize-input) .ant-select-selector) {
+  border-color: var(--ant-error-color);
+}
+
+/* ---- Modal form CRUD: khung vừa viewport, chỉ phần field cuộn, footer luôn hiển thị ---- */
+.crud-form-modal .ant-modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - 48px);
+}
+.crud-form-modal .ant-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 /* ---- Popover tìm kiếm nâng cao ---- */

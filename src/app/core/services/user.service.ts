@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Service, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CrudService } from '../models/crud-service.model';
 import { User, UserPayload } from '../models/user.model';
 
 @Service()
-export class UserService {
+export class UserService implements CrudService<User, UserPayload> {
   private readonly http = inject(HttpClient);
   private readonly url = '/api/users';
 

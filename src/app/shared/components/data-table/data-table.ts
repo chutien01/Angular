@@ -7,7 +7,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -17,16 +16,17 @@ import {
   BadgeStatus,
   ColumnAlign,
   ColumnType,
+  FilterOption,
   TableAction,
   TableColumn,
   TableFilter,
-  TablePrimaryAction,
 } from './data-table.types';
 
 interface Cell {
   type: ColumnType;
   text: string;
   align: ColumnAlign;
+  fixed?: boolean;
   sub?: string;
   initials?: string;
   color?: string;
@@ -52,7 +52,9 @@ const isFilled = (value: unknown): boolean => value !== null && value !== undefi
 
 const initialsOf = (name: string): string => {
   const words = name.trim().split(/\s+/);
-  return (words.length > 1 ? words[0][0] + words[words.length - 1][0] : words[0].slice(0, 2)).toUpperCase();
+  return (
+    words.length > 1 ? words[0][0] + words[words.length - 1][0] : words[0].slice(0, 2)
+  ).toUpperCase();
 };
 
 @Component({
@@ -66,7 +68,6 @@ const initialsOf = (name: string): string => {
     NzIconModule,
     NzInputModule,
     NzInputNumberModule,
-    NzPopconfirmModule,
     NzPopoverModule,
     NzSelectModule,
     NzTableModule,
@@ -74,14 +75,13 @@ const initialsOf = (name: string): string => {
     NzTooltipModule,
   ],
   templateUrl: './data-table.html',
-  host: { class: 'flex min-h-0 flex-1 flex-col' },
+  styleUrl: './data-table.scss',
 })
 export class DataTable<T extends object> {
   readonly data = input.required<T[]>();
   readonly columns = input.required<TableColumn<T>[]>();
   readonly filters = input<TableFilter<T>[]>([]);
   readonly actions = input<TableAction<T>[]>([]);
-  readonly primaryAction = input<TablePrimaryAction>();
   readonly loading = input(false);
   readonly pageSize = input(8);
   readonly rowKey = input<keyof T & string>('id' as keyof T & string);
@@ -94,36 +94,62 @@ export class DataTable<T extends object> {
   protected readonly advancedOpen = signal(false);
   /** Chiều cao tối đa của vùng field trong popover, tính theo khoảng trống bên dưới nút để footer luôn hiển thị. */
   protected readonly advancedBodyMaxHeight = signal(320);
-  private readonly advancedTrigger = viewChild('advancedTrigger', { read: ElementRef<HTMLElement> });
+  private readonly advancedTrigger = viewChild('advancedTrigger', {
+    read: ElementRef<HTMLElement>,
+  });
   private readonly document = inject(DOCUMENT);
 
-  protected readonly basicFilters = computed(() => this.filters().filter((filter) => !filter.advanced));
-  protected readonly advancedFilters = computed(() => this.filters().filter((filter) => filter.advanced));
+  protected readonly basicFilters = computed(() =>
+    this.filters().filter((filter) => !filter.advanced),
+  );
+  protected readonly advancedFilters = computed(() =>
+    this.filters().filter((filter) => filter.advanced),
+  );
   /** Số điều kiện nâng cao đang được áp dụng, hiện trên nút tìm kiếm nâng cao. */
   protected readonly advancedActiveCount = computed(
     () => this.advancedFilters().filter((filter) => isFilled(this.applied()[filter.key])).length,
   );
+
+  /** Danh sách lựa chọn của từng ô lọc, có thể sinh động từ dữ liệu (ví dụ danh mục). */
+  protected readonly filterOptions = computed(() => {
+    const data = this.data();
+    const options: Record<string, FilterOption[]> = {};
+    for (const filter of this.filters()) {
+      options[filter.key] =
+        typeof filter.options === 'function' ? filter.options(data) : (filter.options ?? []);
+    }
+    return options;
+  });
 
   protected readonly headers = computed(() =>
     this.columns().map((column) => ({
       key: column.key,
       title: column.title,
       width: column.width ?? null,
+      fixed: column.fixed ?? false,
       align: column.align ?? (column.type === 'number' ? 'right' : 'left'),
     })),
   );
 
+  /** Có cột cố định bên trái thì cột STT (đứng đầu) cũng phải cố định để vị trí sticky không bị lệch. */
+  protected readonly hasFixedLeft = computed(() => this.columns().some((column) => column.fixed));
+
   private readonly filteredData = computed(() => {
     const applied = this.applied();
     const active = this.filters().filter((filter) => isFilled(applied[filter.key]));
-    return this.data().filter((row) => active.every((filter) => this.matches(filter, row, applied[filter.key])));
+    return this.data().filter((row) =>
+      active.every((filter) => this.matches(filter, row, applied[filter.key])),
+    );
   });
 
   protected readonly rows = computed<RowView<T>[]>(() => {
     const columns = this.columns();
     const rowKey = this.rowKey();
     return this.filteredData().map((row) => {
-      const cells = columns.map((column) => this.buildCell(row, column));
+      const cells = columns.map((column) => ({
+        ...this.buildCell(row, column),
+        fixed: column.fixed ?? false,
+      }));
       return { row, key: valueOf(row, rowKey), label: cells[0]?.text ?? '', cells };
     });
   });
@@ -182,7 +208,11 @@ export class DataTable<T extends object> {
     if (filter.type === 'text') {
       const keyword = String(value).trim().toLowerCase();
       const keys = filter.searchKeys ?? [filter.key];
-      return keys.some((key) => String(valueOf(row, key) ?? '').toLowerCase().includes(keyword));
+      return keys.some((key) =>
+        String(valueOf(row, key) ?? '')
+          .toLowerCase()
+          .includes(keyword),
+      );
     }
     return valueOf(row, filter.key) === value;
   }

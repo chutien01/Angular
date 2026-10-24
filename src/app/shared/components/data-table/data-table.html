@@ -26,7 +26,7 @@
         [ngModel]="values[filter.key]"
         (ngModelChange)="setValue(scope, filter.key, $event)"
       >
-        @for (option of filter.options; track option.value) {
+        @for (option of filterOptions()[filter.key]; track option.value) {
           <nz-option [nzValue]="option.value" [nzLabel]="option.label" />
         }
       </nz-select>
@@ -46,9 +46,9 @@
 
 <ng-template #totalText let-total>Tổng: {{ total }} bản ghi</ng-template>
 
-<div class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+<div class="flex min-h-0 flex-1 flex-col">
   @if (filters().length) {
-    <div class="flex shrink-0 flex-wrap items-center gap-3 border-b border-slate-200 p-4">
+    <div class="flex shrink-0 flex-wrap items-center gap-3 px-6 pb-4">
       @for (filter of basicFilters(); track filter.key) {
         <div class="min-w-48 flex-[1_1_14rem]">
           <ng-container
@@ -91,48 +91,55 @@
             </span>
           </nz-badge>
         }
-        <button nz-button nz-tooltip nzTooltipTitle="Đặt lại" aria-label="Đặt lại" (click)="reset()">
+        <button
+          nz-button
+          nz-tooltip
+          nzTooltipTitle="Đặt lại"
+          aria-label="Đặt lại"
+          (click)="reset()"
+        >
           <nz-icon nzType="reload" />
         </button>
       </div>
     </div>
   }
 
-  @if (primaryAction(); as primary) {
-    <div class="flex shrink-0 justify-end px-4 py-3">
-      <button nz-button nzType="primary" (click)="primary.handler()">
-        @if (primary.icon) {
-          <nz-icon [nzType]="primary.icon" />
-        }
-        {{ primary.label }}
-      </button>
-    </div>
-  }
-
   <nz-table
     #table
-    class="data-table"
+    class="data-table px-6 pb-4"
+    nzBordered
     [nzData]="rows()"
     [nzLoading]="loading()"
     [nzPageSize]="pageSize()"
     [nzShowTotal]="totalText"
     nzSize="middle"
+    nzTableLayout="auto"
+    [nzScroll]="{ x: '100%' }"
   >
     <thead>
       <tr>
+        <!-- Cột STT luôn có, không cần khai báo trong columns -->
+        <th nzAlign="center" nzWidth="64px" [nzLeft]="hasFixedLeft()">STT</th>
         @for (header of headers(); track header.key) {
-          <th [nzAlign]="header.align" [nzWidth]="header.width">{{ header.title }}</th>
+          <th [nzAlign]="header.align" [nzWidth]="header.width" [nzLeft]="header.fixed">
+            {{ header.title }}
+          </th>
         }
         @if (actions().length) {
-          <th nzAlign="center" nzWidth="120px">Thao tác</th>
+          <!-- Cột thao tác luôn cố định bên phải -->
+          <th nzAlign="center" nzWidth="160px" nzRight>Thao tác</th>
         }
       </tr>
     </thead>
     <tbody>
-      @for (view of table.data; track view.key) {
+      @for (view of table.data; track view.key; let index = $index) {
         <tr>
+          <!-- Đánh số liên tục qua các trang: trang 2 (8 dòng/trang) bắt đầu từ 9 -->
+          <td nzAlign="center" [nzLeft]="hasFixedLeft()">
+            {{ (table.nzPageIndex - 1) * table.nzPageSize + index + 1 }}
+          </td>
           @for (cell of view.cells; track $index) {
-            <td [style.text-align]="cell.align">
+            <td [style.text-align]="cell.align" [nzLeft]="cell.fixed ?? false">
               @switch (cell.type) {
                 @case ('tag') {
                   @if (cell.color) {
@@ -155,7 +162,10 @@
                       <nz-avatar class="avatar-soft" [nzText]="cell.initials" />
                     }
                     <div>
-                      <div [class.font-medium]="cell.initials || cell.sub" [class.text-slate-900]="cell.sub">
+                      <div
+                        [class.font-medium]="cell.initials || cell.sub"
+                        [class.text-slate-900]="cell.sub"
+                      >
                         {{ cell.text }}
                       </div>
                       @if (cell.sub) {
@@ -168,36 +178,19 @@
             </td>
           }
           @if (actions().length) {
-            <td>
+            <td nzRight>
               <div class="flex items-center justify-center gap-2">
                 @for (action of actions(); track action.tooltip) {
-                  @if (action.confirm) {
-                    <span nz-tooltip [nzTooltipTitle]="action.tooltip">
-                      <button
-                        nz-button
-                        nz-popconfirm
-                        nzOkText="Xác nhận"
-                        nzCancelText="Hủy"
-                        [nzDanger]="action.danger ?? false"
-                        [nzPopconfirmTitle]="action.confirm"
-                        [attr.aria-label]="action.tooltip + ' ' + view.label"
-                        (nzOnConfirm)="action.handler(view.row)"
-                      >
-                        <nz-icon [nzType]="action.icon" />
-                      </button>
-                    </span>
-                  } @else {
-                    <button
-                      nz-button
-                      nz-tooltip
-                      [nzDanger]="action.danger ?? false"
-                      [nzTooltipTitle]="action.tooltip"
-                      [attr.aria-label]="action.tooltip + ' ' + view.label"
-                      (click)="action.handler(view.row)"
-                    >
-                      <nz-icon [nzType]="action.icon" />
-                    </button>
-                  }
+                  <button
+                    nz-button
+                    nz-tooltip
+                    [nzDanger]="action.danger ?? false"
+                    [nzTooltipTitle]="action.tooltip"
+                    [attr.aria-label]="action.tooltip + ' ' + view.label"
+                    (click)="action.handler(view.row)"
+                  >
+                    <nz-icon [nzType]="action.icon" />
+                  </button>
                 }
               </div>
             </td>
@@ -218,7 +211,11 @@
         <div>
           <ng-container
             [ngTemplateOutlet]="field"
-            [ngTemplateOutletContext]="{ $implicit: filter, values: advancedDraft(), scope: 'modal' }"
+            [ngTemplateOutletContext]="{
+              $implicit: filter,
+              values: advancedDraft(),
+              scope: 'modal',
+            }"
           />
         </div>
       }
