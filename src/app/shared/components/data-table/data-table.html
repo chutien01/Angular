@@ -1,0 +1,231 @@
+<!-- Ô lọc dùng chung cho thanh lọc (scope "bar") và popup nâng cao (scope "modal") -->
+<ng-template #field let-filter let-values="values" let-scope="scope">
+  <label
+    [class]="scope === 'modal' ? 'mb-1 block text-sm font-medium text-slate-700' : 'sr-only'"
+    [attr.for]="scope + '-filter-' + filter.key"
+  >
+    {{ filter.label }}
+  </label>
+  @switch (filter.type) {
+    @case ('text') {
+      <input
+        nz-input
+        [id]="scope + '-filter-' + filter.key"
+        [placeholder]="filter.label"
+        [ngModel]="values[filter.key]"
+        (ngModelChange)="setValue(scope, filter.key, $event)"
+        (keydown.enter)="scope === 'bar' ? search() : searchAdvanced()"
+      />
+    }
+    @case ('select') {
+      <nz-select
+        class="w-full"
+        nzAllowClear
+        [nzId]="scope + '-filter-' + filter.key"
+        [nzPlaceHolder]="filter.label"
+        [ngModel]="values[filter.key]"
+        (ngModelChange)="setValue(scope, filter.key, $event)"
+      >
+        @for (option of filter.options; track option.value) {
+          <nz-option [nzValue]="option.value" [nzLabel]="option.label" />
+        }
+      </nz-select>
+    }
+    @case ('number') {
+      <nz-input-number
+        [nzId]="scope + '-filter-' + filter.key"
+        [nzPlaceHolder]="filter.label"
+        [nzMin]="0"
+        [ngModel]="values[filter.key]"
+        (ngModelChange)="setValue(scope, filter.key, $event)"
+        (keydown.enter)="scope === 'bar' ? search() : searchAdvanced()"
+      />
+    }
+  }
+</ng-template>
+
+<ng-template #totalText let-total>Tổng: {{ total }} bản ghi</ng-template>
+
+<div class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+  @if (filters().length) {
+    <div class="flex shrink-0 flex-wrap items-center gap-3 border-b border-slate-200 p-4">
+      @for (filter of basicFilters(); track filter.key) {
+        <div class="min-w-48 flex-[1_1_14rem]">
+          <ng-container
+            [ngTemplateOutlet]="field"
+            [ngTemplateOutletContext]="{ $implicit: filter, values: draft(), scope: 'bar' }"
+          />
+        </div>
+      }
+
+      <div class="flex shrink-0 items-center gap-2">
+        <button
+          nz-button
+          nzType="primary"
+          nz-tooltip
+          nzTooltipTitle="Tìm kiếm"
+          aria-label="Tìm kiếm"
+          (click)="search()"
+        >
+          <nz-icon nzType="search" />
+        </button>
+        @if (advancedFilters().length) {
+          <nz-badge [nzCount]="advancedActiveCount()" [nzOffset]="[-4, 4]">
+            <span nz-tooltip nzTooltipTitle="Tìm kiếm nâng cao">
+              <button
+                #advancedTrigger
+                nz-button
+                nz-popover
+                nzPopoverTitle="Tìm kiếm nâng cao"
+                nzPopoverTrigger="click"
+                nzPopoverPlacement="bottomRight"
+                nzPopoverOverlayClassName="advanced-search-popover"
+                aria-label="Tìm kiếm nâng cao"
+                aria-haspopup="dialog"
+                [nzPopoverContent]="advancedPanel"
+                [nzPopoverVisible]="advancedOpen()"
+                (nzPopoverVisibleChange)="onAdvancedVisibleChange($event)"
+              >
+                <nz-icon nzType="filter" />
+              </button>
+            </span>
+          </nz-badge>
+        }
+        <button nz-button nz-tooltip nzTooltipTitle="Đặt lại" aria-label="Đặt lại" (click)="reset()">
+          <nz-icon nzType="reload" />
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (primaryAction(); as primary) {
+    <div class="flex shrink-0 justify-end px-4 py-3">
+      <button nz-button nzType="primary" (click)="primary.handler()">
+        @if (primary.icon) {
+          <nz-icon [nzType]="primary.icon" />
+        }
+        {{ primary.label }}
+      </button>
+    </div>
+  }
+
+  <nz-table
+    #table
+    class="data-table"
+    [nzData]="rows()"
+    [nzLoading]="loading()"
+    [nzPageSize]="pageSize()"
+    [nzShowTotal]="totalText"
+    nzSize="middle"
+  >
+    <thead>
+      <tr>
+        @for (header of headers(); track header.key) {
+          <th [nzAlign]="header.align" [nzWidth]="header.width">{{ header.title }}</th>
+        }
+        @if (actions().length) {
+          <th nzAlign="center" nzWidth="120px">Thao tác</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (view of table.data; track view.key) {
+        <tr>
+          @for (cell of view.cells; track $index) {
+            <td [style.text-align]="cell.align">
+              @switch (cell.type) {
+                @case ('tag') {
+                  @if (cell.color) {
+                    <nz-tag [nzColor]="cell.color">{{ cell.text }}</nz-tag>
+                  } @else {
+                    {{ cell.text }}
+                  }
+                }
+                @case ('status') {
+                  @if (cell.status; as status) {
+                    <nz-badge [nzStatus]="status.status" [nzText]="status.text" />
+                  }
+                }
+                @case ('number') {
+                  {{ cell.text }}
+                }
+                @default {
+                  <div class="flex items-center gap-3">
+                    @if (cell.initials) {
+                      <nz-avatar class="avatar-soft" [nzText]="cell.initials" />
+                    }
+                    <div>
+                      <div [class.font-medium]="cell.initials || cell.sub" [class.text-slate-900]="cell.sub">
+                        {{ cell.text }}
+                      </div>
+                      @if (cell.sub) {
+                        <div class="text-xs text-slate-500">{{ cell.sub }}</div>
+                      }
+                    </div>
+                  </div>
+                }
+              }
+            </td>
+          }
+          @if (actions().length) {
+            <td>
+              <div class="flex items-center justify-center gap-2">
+                @for (action of actions(); track action.tooltip) {
+                  @if (action.confirm) {
+                    <span nz-tooltip [nzTooltipTitle]="action.tooltip">
+                      <button
+                        nz-button
+                        nz-popconfirm
+                        nzOkText="Xác nhận"
+                        nzCancelText="Hủy"
+                        [nzDanger]="action.danger ?? false"
+                        [nzPopconfirmTitle]="action.confirm"
+                        [attr.aria-label]="action.tooltip + ' ' + view.label"
+                        (nzOnConfirm)="action.handler(view.row)"
+                      >
+                        <nz-icon [nzType]="action.icon" />
+                      </button>
+                    </span>
+                  } @else {
+                    <button
+                      nz-button
+                      nz-tooltip
+                      [nzDanger]="action.danger ?? false"
+                      [nzTooltipTitle]="action.tooltip"
+                      [attr.aria-label]="action.tooltip + ' ' + view.label"
+                      (click)="action.handler(view.row)"
+                    >
+                      <nz-icon [nzType]="action.icon" />
+                    </button>
+                  }
+                }
+              </div>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+</div>
+
+<ng-template #advancedPanel>
+  <div class="flex w-lg max-w-[calc(100vw-4rem)] flex-col">
+    <div
+      class="grid grid-cols-1 gap-4 overflow-y-auto py-1 pr-1 sm:grid-cols-2"
+      [style.max-height.px]="advancedBodyMaxHeight()"
+    >
+      @for (filter of advancedFilters(); track filter.key) {
+        <div>
+          <ng-container
+            [ngTemplateOutlet]="field"
+            [ngTemplateOutletContext]="{ $implicit: filter, values: advancedDraft(), scope: 'modal' }"
+          />
+        </div>
+      }
+    </div>
+    <div class="mt-3 flex justify-end gap-2 border-t border-slate-200 pt-3">
+      <button nz-button (click)="cancelAdvanced()">Hủy</button>
+      <button nz-button nzType="primary" (click)="searchAdvanced()">Tìm kiếm</button>
+    </div>
+  </div>
+</ng-template>

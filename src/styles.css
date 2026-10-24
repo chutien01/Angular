@@ -1,0 +1,211 @@
+@import 'tailwindcss';
+
+/* ---- Theme: dashboard doanh nghiệp (xanh navy) ---- */
+html {
+  --ant-primary-color: #1d4ed8;
+  --ant-primary-color-hover: #3b82f6;
+  --ant-primary-color-active: #1e40af;
+  --ant-primary-color-outline: rgba(29, 78, 216, 0.15);
+  --ant-primary-1: #eff6ff;
+  --ant-primary-2: #dbeafe;
+  --ant-primary-3: #bfdbfe;
+  --ant-primary-4: #93c5fd;
+  --ant-primary-5: #3b82f6;
+  --ant-primary-6: #1d4ed8;
+  --ant-primary-7: #1e40af;
+  --ant-primary-color-deprecated-f-12: rgba(29, 78, 216, 0.12);
+  --ant-primary-color-deprecated-l-35: #dbeafe;
+  --ant-primary-color-active-deprecated-d-02: #dbeafe;
+  /* Đỏ đậm hơn mặc định (#ff4d4f) để chữ đạt tương phản WCAG AA */
+  --ant-error-color: #dc2626;
+  --ant-error-color-hover: #ef4444;
+  --ant-error-color-active: #b91c1c;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: #0f172a;
+}
+
+/* ---- Bố cục: khung cố định theo viewport, chỉ vùng nội dung được cuộn khi cần ---- */
+.ant-layout.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+.app-shell .ant-layout-sider {
+  overflow-y: auto;
+}
+.ant-layout.app-main {
+  min-width: 0;
+  min-height: 0;
+}
+.ant-layout-content.app-content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.ant-layout {
+  background: #f1f5f9;
+}
+.ant-layout-sider.app-sider,
+.app-sider .ant-menu.ant-menu-dark,
+.app-sider .ant-menu-dark .ant-menu-sub {
+  background: #0f172a;
+}
+.app-sider .ant-menu-dark .ant-menu-item {
+  margin: 4px 8px;
+  width: calc(100% - 16px);
+  border-radius: 6px;
+}
+.app-sider .ant-menu-dark .ant-menu-item-selected {
+  background: var(--ant-primary-color);
+}
+/* Thu gọn: item vuông 48px nằm giữa sider 80px, icon canh giữa */
+.app-sider .ant-menu-dark.ant-menu-inline-collapsed .ant-menu-item {
+  width: 48px;
+  margin: 4px auto;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app-sider .ant-menu-dark.ant-menu-inline-collapsed .ant-menu-title-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.app-sider .ant-menu-dark.ant-menu-inline-collapsed .ant-menu-title-content > span {
+  display: none;
+}
+.app-sider .ant-menu-dark.ant-menu-inline-collapsed .ant-menu-title-content nz-icon {
+  margin: 0;
+  font-size: 18px;
+}
+.ant-layout-header.app-header,
+.ant-layout-footer.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ant-layout-header.app-header {
+  height: 56px;
+  line-height: 56px;
+  padding: 0 24px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+}
+.ant-layout-footer.app-footer {
+  padding: 16px 24px;
+  background: transparent;
+  color: #475569;
+}
+
+/* ---- Bo góc mềm hơn mặc định (2px) ---- */
+.ant-btn,
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-input-number,
+.ant-input-number-group-wrapper,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector,
+.ant-picker {
+  border-radius: 6px;
+}
+/* Ô nhập số mặc định rộng cố định 90px, cho giãn theo ô chứa */
+.ant-input-number,
+.ant-input-number-group-wrapper {
+  width: 100%;
+}
+.ant-modal-content {
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ant-modal-header {
+  border-radius: 10px 10px 0 0;
+}
+.ant-tag {
+  border-radius: 999px;
+  padding: 0 10px;
+}
+.ant-popover-inner,
+.ant-dropdown-menu {
+  border-radius: 8px;
+}
+
+/* ---- Breadcrumb: tăng tương phản (WCAG AA) ---- */
+.ant-breadcrumb,
+.ant-breadcrumb-link,
+.ant-breadcrumb-separator {
+  color: #475569;
+}
+.ant-breadcrumb > span:last-child .ant-breadcrumb-link {
+  color: #0f172a;
+}
+
+/* ---- Bảng ---- */
+.ant-table-wrapper .ant-table-thead > tr > th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.ant-table-wrapper .ant-table-thead > tr > th:first-child,
+.ant-table-wrapper .ant-table-thead > tr > th:last-child {
+  border-radius: 0;
+}
+.ant-table-wrapper .ant-table-tbody > tr:hover > td {
+  background: #f8fafc;
+}
+.ant-table-wrapper .ant-pagination {
+  padding: 0 16px;
+}
+
+/* ---- Bảng dùng chung: lấp đầy chiều cao còn lại, thân bảng cuộn, header và phân trang cố định ---- */
+.ant-table-wrapper.data-table,
+.data-table .ant-spin-nested-loading,
+.data-table .ant-spin-container,
+.data-table .ant-table,
+.data-table .ant-table-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.ant-table-wrapper.data-table {
+  flex: 1 1 auto;
+  min-height: 14rem;
+}
+.data-table .ant-spin-nested-loading,
+.data-table .ant-spin-container,
+.data-table .ant-table,
+.data-table .ant-table-container {
+  flex: 1 1 auto;
+}
+.data-table .ant-table-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+.data-table .ant-table-thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.data-table .ant-table-pagination {
+  flex: none;
+  padding: 0 16px;
+}
+
+/* ---- Avatar chữ cái đầu ---- */
+.ant-avatar.avatar-soft {
+  background: var(--ant-primary-2);
+  color: var(--ant-primary-color);
+  font-weight: 600;
+}
+
+/* ---- Popover tìm kiếm nâng cao ---- */
+.advanced-search-popover .ant-popover-title {
+  font-weight: 600;
+}

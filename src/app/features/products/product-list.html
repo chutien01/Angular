@@ -1,0 +1,50 @@
+<app-page-header title="Sản phẩm" subtitle="Theo dõi danh mục, giá bán và tồn kho" />
+
+<app-data-table
+  [data]="products()"
+  [columns]="columns"
+  [filters]="filters()"
+  [actions]="actions"
+  [primaryAction]="primaryAction"
+  [loading]="loading()"
+/>
+
+<nz-modal
+  [(nzVisible)]="modalOpen"
+  [nzTitle]="editingId() ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'"
+  nzOkText="Lưu"
+  nzCancelText="Hủy"
+  [nzMaskClosable]="false"
+  [nzOkLoading]="saving()"
+  (nzOnOk)="submit()"
+  (nzOnCancel)="modalOpen.set(false)"
+>
+  <ng-container *nzModalContent>
+    <form nz-form nzLayout="vertical" [formGroup]="form">
+      <nz-form-item>
+        <nz-form-label nzRequired nzFor="name">Tên sản phẩm</nz-form-label>
+        <nz-form-control nzErrorTip="Vui lòng nhập tên sản phẩm">
+          <input nz-input id="name" formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired nzFor="category">Danh mục</nz-form-label>
+        <nz-form-control nzErrorTip="Vui lòng nhập danh mục">
+          <input nz-input id="category" formControlName="category" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired nzFor="price">Giá (VNĐ)</nz-form-label>
+        <nz-form-control nzErrorTip="Giá phải lớn hơn hoặc bằng 0">
+          <nz-input-number nzId="price" formControlName="price" [nzMin]="0" [nzStep]="1000" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired nzFor="stock">Tồn kho</nz-form-label>
+        <nz-form-control nzErrorTip="Tồn kho phải lớn hơn hoặc bằng 0">
+          <nz-input-number nzId="stock" formControlName="stock" [nzMin]="0" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
