@@ -1,0 +1,19 @@
+@use '../abstracts/mixins' as m;
+
+// Tag (nz-tag) ← token --tag-*.
+// Bo góc + padding áp cho mọi tag; màu chỉ áp cho tag mặc định (không nzColor, hoặc
+// nzColor="default" → class .ant-tag-default). Tag có màu preset (nzColor="geekblue", "red"...)
+// mang class .ant-tag-<màu> và giữ bảng màu của ng-zorro.
+@include m.ng-zorro-override {
+  .ant-tag {
+    padding-inline: var(--tag-padding-x);
+    border-radius: var(--tag-radius);
+  }
+
+  .ant-tag:not([class*='ant-tag-']),
+  .ant-tag.ant-tag-default {
+    color: var(--tag-color);
+    background: var(--tag-bg);
+    border-color: var(--tag-border);
+  }
+}

@@ -1,0 +1,12 @@
+@use '../abstracts/mixins' as m;
+
+// Switch (nz-switch): nền khi tắt ← --switch-bg-off; khi bật dùng --ant-primary-color (cầu nối).
+@include m.ng-zorro-override {
+  .ant-switch {
+    background-color: var(--switch-bg-off);
+  }
+
+  .ant-switch:focus-visible {
+    @include m.focus-ring;
+  }
+}

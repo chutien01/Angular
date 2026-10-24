@@ -5,8 +5,8 @@
       <dl class="crud-grid">
         @for (item of readonlyItems(); track item.key) {
           <div class="crud-cell crud-readonly-cell" [style.--crud-span]="item.span">
-            <dt class="text-sm text-slate-600">{{ item.label }}</dt>
-            <dd class="m-0 mt-1 font-medium wrap-break-word text-slate-900">{{ item.text }}</dd>
+            <dt class="text-sm text-fg-muted">{{ item.label }}</dt>
+            <dd class="m-0 mt-1 font-medium wrap-break-word text-fg">{{ item.text }}</dd>
           </div>
         }
       </dl>
@@ -29,7 +29,7 @@
                         [ngTemplateOutletContext]="contextOf(field)"
                       />
                     } @else {
-                      <span class="text-sm text-red-700"
+                      <span class="text-sm text-danger"
                         >Thiếu &lt;ng-template appCrudField="{{ field.key }}"&gt;</span
                       >
                     }
@@ -118,7 +118,7 @@
   <div class="min-h-0 flex-1 overflow-y-auto px-6 py-5">
     <ng-container [ngTemplateOutlet]="fieldsTpl" />
   </div>
-  <div class="flex shrink-0 justify-end gap-2 border-t border-slate-200 px-6 py-3">
+  <div class="flex shrink-0 justify-end gap-2 border-t border-line px-6 py-3">
     <ng-container [ngTemplateOutlet]="footerTpl" />
   </div>
 }

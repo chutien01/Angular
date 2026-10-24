@@ -1,0 +1,38 @@
+// =============================================================================
+// Entry SCSS toàn cục — khai báo SAU src/styles.css trong angular.json.
+// src/styles.css lo Tailwind + CSS gốc của ng-zorro (trong @layer antd); file này lo design token,
+// theme light/dark và phần map token vào component.
+// Thứ tự @use = thứ tự CSS sinh ra: token → theme → cầu nối ng-zorro → base → component.
+// =============================================================================
+
+// Lớp A + B: token không phụ thuộc theme
+@use 'abstracts/tokens';
+
+// Lớp C: giá trị token theo theme (light mặc định)
+@use 'themes/light-theme';
+@use 'themes/dark-theme';
+
+// Cầu nối sang API biến CSS chính thức của ng-zorro (--ant-*)
+@use 'vendors/ng-zorro';
+
+// Nền tảng
+@use 'base/typography';
+
+// Map token vào component ng-zorro
+@use 'components/button';
+@use 'components/input';
+@use 'components/select';
+@use 'components/menu';
+@use 'components/icon';
+@use 'components/table';
+@use 'components/pagination';
+@use 'components/overlay';
+@use 'components/form';
+@use 'components/switch';
+@use 'components/tag';
+@use 'components/breadcrumb';
+@use 'components/avatar';
+
+// Bố cục của app (header, sidebar, footer, bảng dùng chung)
+@use 'components/layout';
+@use 'components/data-table';

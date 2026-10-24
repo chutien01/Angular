@@ -31,7 +31,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/styles/styles.scss"
             ],
             "inlineStyleLanguage": "scss"
           },

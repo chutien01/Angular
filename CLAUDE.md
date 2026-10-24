@@ -59,3 +59,18 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use the `providedIn: 'root'` option for singleton services
 - Prefer the `@Service` decorator over `@Injectable({providedIn: 'root'})` for new singleton services (Angular v22+)
 - Use the `inject()` function instead of constructor injection
+
+## Theming & Design Tokens
+
+Global UI is configured through CSS custom properties (design tokens); `ThemeService` (`src/app/core/services/theme.service.ts`) switches `light` (default) / `dark` by setting `data-theme` on `<html>`.
+
+- Entry points: `src/styles.css` (Tailwind + ng-zorro base CSS in `@layer antd`) and `src/styles/styles.scss` (tokens, themes, component mappings). Keep Tailwind out of SCSS files.
+- Token layers:
+  - `src/styles/abstracts/_tokens.scss` — theme-independent tokens (sizes, spacing, radius, typography, icon sizes) and component tokens (`--button-*`, `--input-*`, `--menu-*`, `--table-*`, ...) that default to global tokens.
+  - `src/styles/themes/_light-theme.scss` / `_dark-theme.scss` — token VALUES only (colors, shadows, per-theme component overrides). Both themes must define the same token names. No component rules here.
+  - `src/styles/vendors/_ng-zorro.scss` — maps tokens to ng-zorro's official `--ant-*` CSS variables.
+  - `src/styles/components/_<component>.scss` — maps tokens onto ng-zorro classes inside `@include m.ng-zorro-override` (same `antd` layer, so ng-zorro state rules keep working and Tailwind utilities still win).
+- Token naming: global `--color-*`, `--font-*`, `--space-*`, `--radius-*`, `--shadow-*`, `--icon-size-*`, `--control-height-*`; component `--<component>-<part>-<property>[-<state>]` (e.g. `--button-primary-bg-hover`).
+- Never hardcode colors/sizes in component styles or templates. In templates use the semantic Tailwind utilities `bg-page`, `bg-surface`, `bg-elevated`, `bg-subtle`, `border-line`, `text-fg`, `text-fg-muted`, `text-brand`, `bg-brand-solid`, `text-on-brand`, `text-danger` (defined via `@theme inline` in `src/styles.css`). In `.scss` use `var(--token)`.
+- Adding a token: declare it in `_tokens.scss` (default value referencing global tokens) and, if it differs per theme, override it in both theme files.
+- Supporting a new ng-zorro component: add `src/styles/components/_<component>.scss`, map its colors/sizes/states (including hover/focus/active/disabled where ng-zorro hardcodes neutral colors) to tokens, `@use` it in `src/styles/styles.scss`, then verify both themes and contrast (WCAG AA).

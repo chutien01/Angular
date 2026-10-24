@@ -1,0 +1,28 @@
+@use '../abstracts/mixins' as m;
+
+// Form (nz-form) ← token --form-*.
+@include m.ng-zorro-override {
+  .ant-form {
+    color: var(--color-text);
+  }
+
+  .ant-form-item-label > label {
+    color: var(--form-label-color);
+  }
+
+  .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+    color: var(--form-required-color);
+  }
+
+  .ant-form-item-explain-error {
+    color: var(--form-error-color);
+  }
+}
+
+// Field custom của crud-form: control khai báo trong trang không nhận trạng thái lỗi từ
+// nz-form-control (khác injector), nên tô viền lỗi theo form item để giống field có sẵn.
+.crud-cell
+  .ant-form-item-has-error
+  :is(.ant-input, .ant-input-affix-wrapper, .ant-input-number, .ant-select:not(.ant-select-customize-input) .ant-select-selector) {
+  border-color: var(--input-border-error);
+}

@@ -1,0 +1,52 @@
+// Bố cục của bảng dùng chung app-data-table (chuyển nguyên từ src/styles.css):
+// bảng chiếm phần chiều cao còn lại; khung viền chỉ cao theo nội dung và tự cuộn khi vượt chỗ trống;
+// header bảng dính trên, phân trang luôn ở đáy. Màu sắc của bảng nằm ở _table.scss.
+
+.ant-table-wrapper.data-table,
+.data-table .ant-spin-nested-loading,
+.data-table .ant-spin-container,
+.data-table .ant-table,
+.data-table .ant-table-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ant-table-wrapper.data-table {
+  flex: 1 1 auto;
+  min-height: 14rem;
+}
+
+.data-table .ant-spin-nested-loading,
+.data-table .ant-spin-container {
+  flex: 1 1 auto;
+}
+
+// Không giãn theo chiều cao để khung viền không kéo dài xuống dưới các dòng dữ liệu
+.data-table .ant-table,
+.data-table .ant-table-container {
+  flex: 0 1 auto;
+}
+
+.data-table .ant-table-content {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.data-table .ant-table-thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+// Ô tiêu đề của cột cố định dính cả trên lẫn trái/phải nên phải nằm trên các ô cố định của thân bảng
+.data-table .ant-table-thead > tr > th:is(.ant-table-cell-fix-left, .ant-table-cell-fix-right) {
+  z-index: 3;
+}
+
+.data-table .ant-table-pagination {
+  flex: none;
+  margin-top: auto;
+  padding-top: var(--space-4);
+}

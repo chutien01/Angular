@@ -1,0 +1,54 @@
+// =============================================================================
+// CẦU NỐI ng-zorro ← design token, qua API biến CSS chính thức của ng-zorro
+// (ng-zorro-antd.variable.css khai báo các biến --ant-* này trên <html>).
+// Gán chúng bằng token để mọi trạng thái màu mà ng-zorro tự xử lý (hover, focus, active,
+// chọn, lỗi...) đổi theo theme mà không phải viết lại rule.
+// Phần ng-zorro không có biến (kích thước, nền, viền, chữ) được map trong src/styles/components/.
+// =============================================================================
+
+html {
+  --ant-primary-color: var(--color-primary);
+  --ant-primary-color-hover: var(--color-primary-hover);
+  --ant-primary-color-active: var(--color-primary-active);
+  --ant-primary-color-outline: var(--color-primary-outline);
+  --ant-primary-1: var(--color-primary-1);
+  --ant-primary-2: var(--color-primary-2);
+  --ant-primary-3: var(--color-primary-3);
+  --ant-primary-4: var(--color-primary-4);
+  --ant-primary-5: var(--color-primary-5);
+  --ant-primary-6: var(--color-primary-6);
+  --ant-primary-7: var(--color-primary-7);
+  --ant-primary-color-deprecated-pure: var(--color-primary);
+  --ant-primary-color-deprecated-l-35: var(--color-primary-2);
+  --ant-primary-color-deprecated-l-20: var(--color-primary-4);
+  --ant-primary-color-deprecated-t-20: var(--color-primary-5);
+  --ant-primary-color-deprecated-t-50: var(--color-primary-4);
+  --ant-primary-color-deprecated-f-12: var(--color-primary-outline);
+  --ant-primary-color-active-deprecated-f-30: var(--color-primary-soft);
+  --ant-primary-color-active-deprecated-d-02: var(--color-primary-soft);
+
+  --ant-success-color: var(--color-success);
+  --ant-success-color-hover: var(--color-success);
+  --ant-success-color-active: var(--color-success);
+  --ant-success-color-outline: var(--color-success-border);
+  --ant-success-color-deprecated-bg: var(--color-success-bg);
+  --ant-success-color-deprecated-border: var(--color-success-border);
+
+  --ant-error-color: var(--color-error);
+  --ant-error-color-hover: var(--color-error-hover);
+  --ant-error-color-active: var(--color-error-active);
+  --ant-error-color-outline: var(--color-error-outline);
+  --ant-error-color-deprecated-bg: var(--color-error-bg);
+  --ant-error-color-deprecated-border: var(--color-error-border);
+
+  --ant-warning-color: var(--color-warning);
+  --ant-warning-color-hover: var(--color-warning);
+  --ant-warning-color-active: var(--color-warning);
+  --ant-warning-color-outline: var(--color-warning-border);
+  --ant-warning-color-deprecated-bg: var(--color-warning-bg);
+  --ant-warning-color-deprecated-border: var(--color-warning-border);
+
+  --ant-info-color: var(--color-info);
+  --ant-info-color-deprecated-bg: var(--color-primary-1);
+  --ant-info-color-deprecated-border: var(--color-primary-3);
+}

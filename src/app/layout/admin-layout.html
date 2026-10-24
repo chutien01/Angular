@@ -1,20 +1,34 @@
 <nz-layout class="app-shell">
   <nz-header class="app-header">
     <div class="flex items-center gap-3">
-      <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-blue-700 text-lg text-white">
-        <nz-icon nzType="appstore" />
+      <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-brand-solid text-on-brand">
+        <nz-icon nzType="appstore" class="app-icon-lg" />
       </span>
-      <span class="text-base font-semibold text-slate-900">Angular Base</span>
+      <span class="text-base font-semibold text-fg">Angular Base</span>
     </div>
 
     <div class="flex items-center gap-5">
+      <!-- Chuyển light / dark theme -->
+      <button
+        type="button"
+        class="flex cursor-pointer items-center border-0 bg-transparent text-fg-muted hover:text-brand"
+        nz-tooltip
+        nzTooltipPlacement="bottom"
+        [nzTooltipTitle]="themeToggleLabel()"
+        [attr.aria-label]="themeToggleLabel()"
+        [attr.aria-pressed]="isDark()"
+        (click)="themeService.toggle()"
+      >
+        <nz-icon [nzType]="isDark() ? 'sun' : 'moon'" class="app-icon-lg" />
+      </button>
+
       <nz-badge [nzCount]="3" [nzOffset]="[2, 2]">
         <button
           type="button"
-          class="cursor-pointer border-0 bg-transparent text-lg text-slate-600"
+          class="flex cursor-pointer items-center border-0 bg-transparent text-fg-muted hover:text-brand"
           aria-label="Thông báo"
         >
-          <nz-icon nzType="bell" />
+          <nz-icon nzType="bell" class="app-icon-lg" />
         </button>
       </nz-badge>
 
@@ -26,8 +40,8 @@
         nzPlacement="bottomRight"
       >
         <nz-avatar class="avatar-soft" nzText="QT" />
-        <span class="font-medium text-slate-700">Quản trị viên</span>
-        <nz-icon nzType="down" class="text-xs text-slate-500" />
+        <span class="font-medium text-fg">Quản trị viên</span>
+        <nz-icon nzType="down" class="text-xs text-fg-muted" />
       </button>
       <nz-dropdown-menu #userMenu="nzDropdownMenu">
         <ul nz-menu>
@@ -88,7 +102,7 @@
           }
         </ul>
         @if (!menuItems().length && !collapsed()) {
-          <p class="m-0 px-4 pb-4 text-sm text-slate-600">Không tìm thấy menu phù hợp</p>
+          <p class="m-0 px-4 pb-4 text-sm text-fg-muted">Không tìm thấy menu phù hợp</p>
         }
       </div>
     </nz-sider>

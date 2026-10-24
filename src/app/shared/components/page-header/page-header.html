@@ -6,12 +6,12 @@
   }
 </nz-breadcrumb>
 <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-  <h1 class="m-0 text-xl font-semibold text-slate-900">{{ title() }}</h1>
+  <h1 class="m-0 text-xl font-semibold text-fg">{{ title() }}</h1>
   <!-- Các nút thao tác của trang, canh phải cùng hàng với tiêu đề -->
   <div class="flex flex-wrap items-center gap-2 empty:hidden">
     <ng-content />
   </div>
 </div>
 @if (subtitle()) {
-  <p class="m-0 mt-1 text-sm text-slate-600">{{ subtitle() }}</p>
+  <p class="m-0 mt-1 text-sm text-fg-muted">{{ subtitle() }}</p>
 }

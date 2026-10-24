@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -10,6 +10,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
+import { ThemeService } from '../core/services/theme.service';
 
 interface MenuItem {
   label: string;
@@ -51,6 +52,12 @@ const normalize = (text: string): string =>
   templateUrl: './admin-layout.html',
 })
 export class AdminLayout {
+  protected readonly themeService = inject(ThemeService);
+  protected readonly isDark = this.themeService.isDark;
+  protected readonly themeToggleLabel = computed(() =>
+    this.isDark() ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối',
+  );
+
   protected readonly collapsed = signal(false);
   protected readonly toggleLabel = computed(() => (this.collapsed() ? 'Mở rộng menu' : 'Thu gọn menu'));
 

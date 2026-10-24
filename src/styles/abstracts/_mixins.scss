@@ -1,0 +1,16 @@
+// Mixin dùng chung cho các file trong src/styles/components/.
+
+// Đặt rule ghi đè vào CÙNG layer với CSS gốc của ng-zorro (khai báo trong src/styles.css).
+// Rule nằm sau nên thắng ở cùng độ ưu tiên, còn các rule trạng thái cụ thể hơn của ng-zorro
+// ([disabled], :hover, -status-error...) vẫn có hiệu lực; class Tailwind vẫn thắng cả hai.
+@mixin ng-zorro-override {
+  @layer antd {
+    @content;
+  }
+}
+
+// Vòng sáng khi focus bằng bàn phím.
+@mixin focus-ring {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}

@@ -1,0 +1,74 @@
+@use '../abstracts/mixins' as m;
+
+// Menu (nz-menu kiểu inline/vertical) ← token --menu-*.
+// Riêng phần hình học của sidebar (thu gọn, khoảng cách item) nằm ở _layout.scss.
+@include m.ng-zorro-override {
+  .ant-menu {
+    color: var(--menu-item-color);
+    background: var(--menu-bg);
+  }
+
+  .ant-menu-inline,
+  .ant-menu-vertical {
+    border-right-color: var(--menu-border);
+  }
+
+  .ant-menu-vertical .ant-menu-item,
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-inline > .ant-menu-item {
+    height: var(--menu-item-height);
+    line-height: var(--menu-item-height);
+  }
+
+  .ant-menu-item {
+    border-radius: var(--menu-item-radius);
+  }
+
+  // Hover
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover {
+    color: var(--menu-item-hover-color);
+    background-color: var(--menu-item-hover-bg);
+  }
+
+  .ant-menu-item:active {
+    background: var(--menu-item-hover-bg);
+  }
+
+  // Active (đang chọn)
+  .ant-menu-item-selected,
+  .ant-menu-item-selected a,
+  .ant-menu-item-selected a:hover {
+    color: var(--menu-item-active-color);
+  }
+
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    font-weight: var(--menu-item-active-font-weight);
+    background-color: var(--menu-item-active-bg);
+  }
+
+  .ant-menu-inline .ant-menu-item::after,
+  .ant-menu-vertical .ant-menu-item::after {
+    border-right-color: var(--menu-item-active-color);
+  }
+
+  .ant-menu-item:focus-visible {
+    @include m.focus-ring;
+  }
+
+  // Icon
+  .ant-menu-item .anticon,
+  .ant-menu-item .ant-menu-item-icon {
+    font-size: var(--menu-icon-size);
+  }
+
+  .ant-menu-inline-collapsed > .ant-menu-item .anticon,
+  .ant-menu-inline-collapsed > .ant-menu-item .ant-menu-item-icon {
+    font-size: var(--menu-icon-size-collapsed);
+  }
+
+  // Disabled
+  .ant-menu-item-disabled,
+  .ant-menu-item-disabled:hover {
+    color: var(--color-text-disabled) !important;
+  }
+}

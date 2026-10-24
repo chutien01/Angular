@@ -1,0 +1,31 @@
+@use '../abstracts/mixins' as m;
+
+// Icon (nz-icon) ← token --icon-size*.
+// Không đặt cỡ cho mọi .anticon: icon bên trong ô nhập, tag, select... đi theo cỡ chữ của
+// control chứa nó. Chỉ áp cỡ chuẩn ở các vị trí icon đứng độc lập.
+@include m.ng-zorro-override {
+  .ant-btn > .anticon {
+    font-size: var(--icon-size);
+  }
+
+  .ant-btn-sm > .anticon {
+    font-size: var(--icon-size-sm);
+  }
+
+  .ant-btn-lg > .anticon {
+    font-size: var(--icon-size-lg);
+  }
+
+  // Lớp tiện ích cho icon đứng riêng (header, sidebar...)
+  .app-icon {
+    font-size: var(--icon-size);
+  }
+
+  .app-icon-sm {
+    font-size: var(--icon-size-sm);
+  }
+
+  .app-icon-lg {
+    font-size: var(--icon-size-lg);
+  }
+}

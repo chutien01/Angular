@@ -1,0 +1,16 @@
+@use '../abstracts/mixins' as m;
+
+// Breadcrumb (nz-breadcrumb) ← token --breadcrumb-*.
+@include m.ng-zorro-override {
+  .ant-breadcrumb,
+  .ant-breadcrumb-link,
+  .ant-breadcrumb-separator,
+  .ant-breadcrumb a {
+    color: var(--breadcrumb-color);
+  }
+
+  .ant-breadcrumb > nz-breadcrumb-item:last-child .ant-breadcrumb-link,
+  .ant-breadcrumb > span:last-child .ant-breadcrumb-link {
+    color: var(--breadcrumb-last-color);
+  }
+}

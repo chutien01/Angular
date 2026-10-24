@@ -1,0 +1,109 @@
+@use '../abstracts/mixins' as m;
+
+// Select (khung chọn dùng chung token --input-*) và dropdown của Select / Autocomplete (--select-*).
+@include m.ng-zorro-override {
+  .ant-select {
+    color: var(--input-color);
+    font-size: var(--input-font-size);
+  }
+
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    border-radius: var(--input-radius);
+  }
+
+  // ng-zorro 22 đặt chiều cao lên chính .ant-select (khung bên trong height: 100%),
+  // nên token chiều cao gán vào đúng các selector đó (trùng selector gốc để thắng nhờ đứng sau).
+  .ant-select-single.ant-select {
+    height: var(--input-height-md);
+  }
+
+  .ant-select-single.ant-select-sm {
+    height: var(--input-height-sm);
+  }
+
+  .ant-select-single.ant-select-lg {
+    height: var(--input-height-lg);
+  }
+
+  .ant-select-single.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    padding-inline: var(--input-padding-x);
+  }
+
+  .ant-select-single.ant-select .ant-select-selector .ant-select-selection-wrap::after,
+  .ant-select-single.ant-select .ant-select-selector .ant-select-selection-item,
+  .ant-select-single.ant-select .ant-select-selector .ant-select-selection-placeholder,
+  .ant-select-single.ant-select:not(.ant-select-customize-input) .ant-select-selector::after {
+    line-height: calc(var(--input-height-md) - 2px);
+  }
+
+  .ant-select-single.ant-select:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input {
+    height: calc(var(--input-height-md) - 2px);
+  }
+
+  .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+    border-color: var(--input-border-hover);
+  }
+
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+  }
+
+  .ant-select-status-error.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
+    .ant-select-selector {
+    background-color: var(--input-bg);
+    border-color: var(--input-border-error) !important;
+  }
+
+  .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    color: var(--input-disabled-color);
+    background: var(--input-disabled-bg);
+  }
+
+  .ant-select-selection-placeholder {
+    color: var(--input-placeholder);
+  }
+
+  .ant-select-arrow,
+  .ant-select-clear {
+    color: var(--select-arrow-color);
+    background: var(--input-bg);
+  }
+
+  .ant-select-clear:hover {
+    color: var(--color-text-secondary);
+  }
+
+  // Dropdown của Select và Autocomplete
+  .ant-select-dropdown {
+    color: var(--select-option-color);
+    background-color: var(--select-popup-bg);
+    border-radius: var(--dropdown-radius);
+    box-shadow: var(--overlay-shadow);
+  }
+
+  .ant-select-item {
+    color: var(--select-option-color);
+  }
+
+  .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+    background-color: var(--select-option-hover-bg);
+  }
+
+  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+    color: var(--select-option-selected-color);
+    font-weight: var(--select-option-selected-font-weight);
+    background-color: var(--select-option-selected-bg);
+  }
+
+  .ant-select-item-option-disabled {
+    color: var(--color-text-disabled);
+  }
+
+  .ant-select-item-empty,
+  .ant-select-dropdown-empty {
+    color: var(--color-text-secondary);
+  }
+}

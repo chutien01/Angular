@@ -1,0 +1,43 @@
+@use '../abstracts/mixins' as m;
+
+// Pagination (phân trang của nz-table) ← token --pagination-*.
+@include m.ng-zorro-override {
+  .ant-pagination {
+    color: var(--color-text);
+  }
+
+  .ant-pagination-total-text {
+    color: var(--color-text-secondary);
+  }
+
+  .ant-pagination-item,
+  .ant-pagination-prev .ant-pagination-item-link,
+  .ant-pagination-next .ant-pagination-item-link {
+    background-color: var(--pagination-item-bg);
+    border-color: var(--pagination-item-border);
+    border-radius: var(--radius-md);
+  }
+
+  .ant-pagination-item a,
+  .ant-pagination-prev .ant-pagination-item-link,
+  .ant-pagination-next .ant-pagination-item-link {
+    color: var(--pagination-item-color);
+  }
+
+  .ant-pagination-item:hover a,
+  .ant-pagination-item-active a,
+  .ant-pagination-item-active:hover a {
+    color: var(--pagination-item-active-color);
+  }
+
+  .ant-pagination-item-active {
+    background: var(--pagination-item-bg);
+    border-color: var(--pagination-item-active-color);
+  }
+
+  .ant-pagination-disabled .ant-pagination-item-link,
+  .ant-pagination-disabled:hover .ant-pagination-item-link {
+    color: var(--color-text-disabled);
+    border-color: var(--pagination-item-border);
+  }
+}

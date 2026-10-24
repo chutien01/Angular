@@ -1,0 +1,68 @@
+@use '../abstracts/mixins' as m;
+
+// Table (nz-table) ← token --table-*. Bố cục cuộn/sticky của bảng dùng chung nằm ở _data-table.scss.
+@include m.ng-zorro-override {
+  .ant-table {
+    color: var(--table-color);
+    background: var(--table-bg);
+  }
+
+  .ant-table-thead > tr > th {
+    color: var(--table-header-color);
+    font-size: var(--table-header-font-size);
+    font-weight: var(--table-header-font-weight);
+    letter-spacing: var(--table-header-letter-spacing);
+    text-transform: var(--table-header-text-transform);
+    background: var(--table-header-bg);
+    border-bottom-color: var(--table-border);
+  }
+
+  .ant-table-thead
+    > tr
+    > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
+    background-color: var(--table-border);
+  }
+
+  .ant-table-tbody > tr > td {
+    border-bottom-color: var(--table-border);
+  }
+
+  .ant-table-tbody > tr.ant-table-row:hover > td,
+  .ant-table-tbody > tr > td.ant-table-cell-row-hover {
+    background: var(--table-row-hover-bg);
+  }
+
+  // Bảng có viền (nzBordered)
+  .ant-table.ant-table-bordered > .ant-table-container,
+  .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table,
+  .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > thead > tr > th,
+  .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > tbody > tr > td {
+    border-color: var(--table-border);
+  }
+
+  // Cột cố định (nzLeft / nzRight) phải có nền đặc để che nội dung cuộn bên dưới
+  .ant-table-cell-fix-left,
+  .ant-table-cell-fix-right {
+    background: var(--table-bg);
+  }
+
+  .ant-table-thead > tr > th.ant-table-cell-fix-left,
+  .ant-table-thead > tr > th.ant-table-cell-fix-right {
+    background: var(--table-header-bg);
+  }
+
+  .ant-table-placeholder,
+  .ant-table-tbody > tr.ant-table-placeholder:hover > td {
+    color: var(--color-text-secondary);
+    background: var(--table-bg);
+  }
+
+  .ant-empty-description {
+    color: var(--color-text-secondary);
+  }
+
+  // Lớp phủ khi đang tải
+  .ant-spin-container::after {
+    background: var(--table-bg);
+  }
+}

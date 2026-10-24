@@ -1,0 +1,142 @@
+@use '../abstracts/mixins' as m;
+
+// Button (nz-button) ← token --button-*.
+// Lặp lại đủ selector trạng thái của ng-zorro cho từng biến thể đang dùng (default, primary,
+// danger) vì ng-zorro gán màu nền/chữ/viền cứng ở từng trạng thái.
+@include m.ng-zorro-override {
+  .ant-btn {
+    height: var(--button-height-md);
+    padding-inline: var(--button-padding-x-md);
+    font-size: var(--button-font-size);
+    font-weight: var(--button-font-weight);
+    border-radius: var(--button-radius);
+    color: var(--button-default-color);
+    background: var(--button-default-bg);
+    border-color: var(--button-default-border);
+  }
+
+  .ant-btn-lg {
+    height: var(--button-height-lg);
+    padding-inline: var(--button-padding-x-lg);
+    font-size: var(--button-font-size-lg);
+    border-radius: var(--button-radius);
+  }
+
+  .ant-btn-sm {
+    height: var(--button-height-sm);
+    padding-inline: var(--button-padding-x-sm);
+    border-radius: var(--button-radius);
+  }
+
+  // Nút chỉ có icon: vuông theo chiều cao
+  .ant-btn-icon-only {
+    width: var(--button-height-md);
+    padding-inline: 0;
+  }
+
+  .ant-btn-icon-only.ant-btn-lg {
+    width: var(--button-height-lg);
+  }
+
+  .ant-btn-icon-only.ant-btn-sm {
+    width: var(--button-height-sm);
+  }
+
+  // Default
+  .ant-btn:hover,
+  .ant-btn:focus {
+    color: var(--button-default-color-hover);
+    background: var(--button-default-bg-hover);
+    border-color: var(--button-default-border-hover);
+  }
+
+  .ant-btn:active {
+    background: var(--button-default-bg-hover);
+  }
+
+  .ant-btn:focus-visible {
+    @include m.focus-ring;
+  }
+
+  .ant-btn[disabled],
+  .ant-btn[disabled]:hover,
+  .ant-btn[disabled]:focus,
+  .ant-btn[disabled]:active {
+    color: var(--button-disabled-color);
+    background: var(--button-disabled-bg);
+    border-color: var(--button-disabled-border);
+  }
+
+  // Primary
+  .ant-btn-primary {
+    color: var(--button-primary-color);
+    background: var(--button-primary-bg);
+    border-color: var(--button-primary-bg);
+  }
+
+  .ant-btn-primary:hover,
+  .ant-btn-primary:focus {
+    color: var(--button-primary-color);
+    background: var(--button-primary-bg-hover);
+    border-color: var(--button-primary-bg-hover);
+  }
+
+  .ant-btn-primary:active {
+    color: var(--button-primary-color);
+    background: var(--button-primary-bg-active);
+    border-color: var(--button-primary-bg-active);
+  }
+
+  .ant-btn-primary[disabled],
+  .ant-btn-primary[disabled]:hover,
+  .ant-btn-primary[disabled]:focus,
+  .ant-btn-primary[disabled]:active {
+    color: var(--button-disabled-color);
+    background: var(--button-disabled-bg);
+    border-color: var(--button-disabled-border);
+  }
+
+  // Danger (nzDanger trên nút default)
+  .ant-btn-dangerous {
+    color: var(--button-danger-color);
+    background: var(--button-default-bg);
+    border-color: var(--button-danger-border);
+  }
+
+  .ant-btn-dangerous:hover,
+  .ant-btn-dangerous:focus {
+    color: var(--button-danger-color-hover);
+    background: var(--button-default-bg-hover);
+    border-color: var(--button-danger-color-hover);
+  }
+
+  .ant-btn-dangerous:active {
+    color: var(--button-danger-color);
+    background: var(--button-default-bg-hover);
+    border-color: var(--button-danger-border);
+  }
+
+  .ant-btn-dangerous[disabled],
+  .ant-btn-dangerous[disabled]:hover,
+  .ant-btn-dangerous[disabled]:focus,
+  .ant-btn-dangerous[disabled]:active {
+    color: var(--button-disabled-color);
+    background: var(--button-disabled-bg);
+    border-color: var(--button-disabled-border);
+  }
+
+  // Nút xác nhận nguy hiểm (nzOkDanger trong modal xác nhận xóa)
+  .ant-btn-dangerous.ant-btn-primary {
+    color: var(--button-primary-color);
+    background: var(--button-danger-solid-bg);
+    border-color: var(--button-danger-solid-bg);
+  }
+
+  .ant-btn-dangerous.ant-btn-primary:hover,
+  .ant-btn-dangerous.ant-btn-primary:focus,
+  .ant-btn-dangerous.ant-btn-primary:active {
+    color: var(--button-primary-color);
+    background: var(--button-danger-solid-bg-hover);
+    border-color: var(--button-danger-solid-bg-hover);
+  }
+}

@@ -1,0 +1,78 @@
+// =============================================================================
+// DARK THEME — chỉ khai báo GIÁ TRỊ token, cùng tên với light theme.
+// Áp dụng khi <html data-theme="dark">.
+// =============================================================================
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+
+  // Màu thương hiệu: sáng hơn để chữ/icon màu primary đọc được trên nền tối
+  --color-primary: #60a5fa;
+  --color-primary-hover: #93c5fd;
+  --color-primary-active: #3b82f6;
+  --color-primary-outline: rgba(96, 165, 250, 0.35);
+  --color-primary-1: #172554;
+  --color-primary-2: #1e3a8a;
+  --color-primary-3: #1e40af;
+  --color-primary-4: #2563eb;
+  --color-primary-5: #3b82f6;
+  --color-primary-6: #60a5fa;
+  --color-primary-7: #93c5fd;
+  --color-primary-soft: rgba(96, 165, 250, 0.16);
+  --color-on-primary: #fff;
+
+  // Màu ngữ nghĩa
+  --color-success: #4ade80;
+  --color-success-bg: rgba(74, 222, 128, 0.12);
+  --color-success-border: rgba(74, 222, 128, 0.35);
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.12);
+  --color-warning-border: rgba(251, 191, 36, 0.35);
+  --color-error: #f87171;
+  --color-error-hover: #fca5a5;
+  --color-error-active: #ef4444;
+  --color-error-outline: rgba(248, 113, 113, 0.3);
+  --color-error-bg: rgba(248, 113, 113, 0.12);
+  --color-error-border: rgba(248, 113, 113, 0.35);
+  --color-info: var(--color-primary);
+
+  // Chữ
+  --color-text: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-placeholder: #64748b;
+  --color-text-disabled: rgba(226, 232, 240, 0.35);
+
+  // Nền
+  --color-bg: #0b1120;
+  --color-bg-container: #111827;
+  --color-bg-elevated: #1f2937;
+  --color-bg-subtle: #172033;
+  --color-bg-hover: #243044;
+  --color-bg-disabled: #1f2937;
+
+  // Viền
+  --color-border: #243044;
+  --color-border-strong: #374151;
+
+  // Đổ bóng
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 3px 6px -4px rgba(0, 0, 0, 0.5), 0 6px 16px 0 rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 6px 16px -8px rgba(0, 0, 0, 0.6), 0 9px 28px 0 rgba(0, 0, 0, 0.45),
+    0 12px 48px 16px rgba(0, 0, 0, 0.3);
+
+  // Khác
+  --color-tooltip-bg: #334155;
+  --color-tooltip-text: #f8fafc;
+  --color-switch-off: #475569;
+
+  // Token component cần giá trị riêng ở chế độ tối
+  // Nền nút primary đậm hơn primary chung để chữ trắng vẫn đạt tương phản AA
+  --button-primary-bg: #2563eb;
+  --button-primary-bg-hover: #1d4ed8;
+  --button-primary-bg-active: #1e40af;
+  --button-danger-solid-bg: #b91c1c;
+  --button-danger-solid-bg-hover: #dc2626;
+  --menu-item-color: #cbd5e1;
+  --avatar-soft-bg: #1e3a8a;
+  --avatar-soft-color: #bfdbfe;
+}

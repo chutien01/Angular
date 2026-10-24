@@ -1,0 +1,186 @@
+// =============================================================================
+// DESIGN TOKENS — phần KHÔNG phụ thuộc theme.
+//   Lớp A: token toàn cục (chữ, khoảng cách, bo góc, kích thước control, icon).
+//   Lớp B: token component, mặc định trỏ về token toàn cục (gồm cả token màu của theme),
+//          nên tự đổi theo theme. File theme chỉ khai báo lại khi một mode cần giá trị khác.
+// Giá trị màu của từng mode nằm trong src/styles/themes/_light-theme.scss và _dark-theme.scss.
+// Quy ước tên: --<component>-<phần>-<thuộc tính>[-<trạng thái>], ví dụ --button-primary-bg-hover.
+// =============================================================================
+
+:root {
+  // ---------------------------------------------------------------------------
+  // Lớp A — Token toàn cục
+  // ---------------------------------------------------------------------------
+  // Chữ
+  --font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-title: 20px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --line-height: 1.5715;
+
+  // Khoảng cách
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+
+  // Bo góc (trùng tên biến của Tailwind là cố ý: rounded-md, rounded-lg... cũng theo token)
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-full: 999px;
+
+  // Chiều cao control: button, input, select...
+  --control-height-sm: 24px;
+  --control-height-md: 32px;
+  --control-height-lg: 40px;
+
+  // Icon
+  --icon-size-sm: 14px;
+  --icon-size-md: 16px;
+  --icon-size-lg: 18px;
+
+  // Viền focus khi dùng bàn phím (vòng sáng quanh control)
+  --focus-ring: 0 0 0 2px var(--color-primary-outline);
+
+  // ---------------------------------------------------------------------------
+  // Lớp B — Token component
+  // ---------------------------------------------------------------------------
+  // Button
+  --button-height-sm: var(--control-height-sm);
+  --button-height-md: var(--control-height-md);
+  --button-height-lg: var(--control-height-lg);
+  --button-padding-x-sm: 7px;
+  --button-padding-x-md: 15px;
+  --button-padding-x-lg: 15px;
+  --button-font-size: var(--font-size-md);
+  --button-font-size-lg: var(--font-size-lg);
+  --button-font-weight: var(--font-weight-regular);
+  --button-radius: var(--radius-md);
+  --button-default-bg: var(--color-bg-container);
+  --button-default-color: var(--color-text);
+  --button-default-border: var(--color-border-strong);
+  --button-default-bg-hover: var(--color-bg-container);
+  --button-default-color-hover: var(--color-primary-hover);
+  --button-default-border-hover: var(--color-primary-hover);
+  --button-primary-bg: var(--color-primary);
+  --button-primary-bg-hover: var(--color-primary-hover);
+  --button-primary-bg-active: var(--color-primary-active);
+  --button-primary-color: var(--color-on-primary);
+  --button-danger-color: var(--color-error);
+  --button-danger-border: var(--color-error);
+  --button-danger-color-hover: var(--color-error-hover);
+  --button-danger-solid-bg: var(--color-error-active); // nút nguy hiểm dạng đặc (xác nhận xóa)
+  --button-danger-solid-bg-hover: var(--color-error);
+  --button-disabled-bg: var(--color-bg-disabled);
+  --button-disabled-color: var(--color-text-disabled);
+  --button-disabled-border: var(--color-border-strong);
+
+  // Input, InputNumber, Textarea, Autocomplete
+  --input-height-sm: var(--control-height-sm);
+  --input-height-md: var(--control-height-md);
+  --input-height-lg: var(--control-height-lg);
+  --input-padding-x: 11px;
+  --input-font-size: var(--font-size-md);
+  --input-radius: var(--radius-md);
+  --input-bg: var(--color-bg-container);
+  --input-color: var(--color-text);
+  --input-border: var(--color-border-strong);
+  --input-border-hover: var(--color-primary-hover);
+  --input-border-focus: var(--color-primary-hover);
+  --input-focus-ring: var(--focus-ring);
+  --input-border-error: var(--color-error);
+  --input-placeholder: var(--color-text-placeholder);
+  --input-disabled-bg: var(--color-bg-disabled);
+  --input-disabled-color: var(--color-text-disabled);
+
+  // Select (khung chọn dùng chung token với input) + dropdown
+  --select-popup-bg: var(--color-bg-elevated);
+  --select-option-color: var(--color-text);
+  --select-option-hover-bg: var(--color-bg-hover);
+  --select-option-selected-bg: var(--color-primary-soft);
+  --select-option-selected-color: var(--color-text);
+  --select-option-selected-font-weight: var(--font-weight-semibold);
+  --select-arrow-color: var(--color-text-placeholder);
+
+  // Menu
+  --menu-bg: var(--color-bg-container);
+  --menu-border: var(--color-border);
+  --menu-item-height: 40px;
+  --menu-item-radius: var(--radius-md);
+  --menu-item-color: var(--color-text-secondary);
+  --menu-item-hover-bg: var(--color-bg-hover);
+  --menu-item-hover-color: var(--color-primary);
+  --menu-item-active-bg: var(--color-primary-soft);
+  --menu-item-active-color: var(--color-primary);
+  --menu-item-active-font-weight: var(--font-weight-medium);
+  --menu-icon-size: var(--icon-size-md);
+  --menu-icon-size-collapsed: var(--icon-size-lg);
+
+  // Icon
+  --icon-size: var(--icon-size-md); // icon trong header, sidebar, nút chỉ có icon
+
+  // Table + Pagination
+  --table-bg: var(--color-bg-container);
+  --table-color: var(--color-text);
+  --table-border: var(--color-border);
+  --table-header-bg: var(--color-bg-subtle);
+  --table-header-color: var(--color-text-secondary);
+  --table-header-font-size: var(--font-size-sm);
+  --table-header-font-weight: var(--font-weight-semibold);
+  --table-header-text-transform: uppercase;
+  --table-header-letter-spacing: 0.03em;
+  --table-row-hover-bg: var(--color-bg-subtle);
+  --pagination-item-bg: var(--color-bg-container);
+  --pagination-item-color: var(--color-text);
+  --pagination-item-border: var(--color-border-strong);
+  --pagination-item-active-color: var(--color-primary);
+
+  // Overlay: modal, popover, dropdown, message, autocomplete/select popup
+  --overlay-bg: var(--color-bg-elevated);
+  --overlay-color: var(--color-text);
+  --overlay-border: var(--color-border);
+  --overlay-shadow: var(--shadow-lg);
+  --overlay-item-hover-bg: var(--color-bg-hover);
+  --modal-radius: var(--radius-xl);
+  --popover-radius: var(--radius-lg);
+  --dropdown-radius: var(--radius-lg);
+  --tooltip-bg: var(--color-tooltip-bg);
+  --tooltip-color: var(--color-tooltip-text);
+
+  // Form
+  --form-label-color: var(--color-text);
+  --form-required-color: var(--color-error);
+  --form-error-color: var(--color-error);
+
+  // Các component khác
+  --switch-bg-off: var(--color-switch-off);
+  --tag-radius: var(--radius-full);
+  --tag-padding-x: 10px;
+  --tag-bg: var(--color-bg-subtle);
+  --tag-color: var(--color-text);
+  --tag-border: var(--color-border-strong);
+  --breadcrumb-color: var(--color-text-secondary);
+  --breadcrumb-last-color: var(--color-text);
+  --avatar-soft-bg: var(--color-primary-2);
+  --avatar-soft-color: var(--color-primary);
+  --badge-text-color: var(--color-text);
+
+  // Layout (header, sidebar, card, footer)
+  --layout-header-height: 56px;
+  --layout-header-bg: var(--color-bg-container);
+  --layout-sider-bg: var(--color-bg-container);
+  --layout-border: var(--color-border);
+  --layout-footer-color: var(--color-text-secondary);
+  --card-bg: var(--color-bg-container);
+  --card-border: var(--color-border);
+  --card-radius: var(--radius-lg);
+  --card-shadow: var(--shadow-sm);
+}

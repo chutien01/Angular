@@ -1,256 +1,34 @@
 /*
+ * Entry Tailwind (Tailwind v4 không chạy qua Sass nên tách riêng khỏi src/styles/styles.scss).
+ *
  * Thứ tự layer: CSS của ng-zorro (antd) nằm trên preflight của Tailwind nhưng dưới utilities,
  * để class Tailwind (m-0, flex, w-full, ...) luôn thắng style mặc định của ng-zorro.
- * Các rule tùy biến bên dưới không nằm trong layer nào nên có ưu tiên cao nhất.
+ * Phần map design token vào ng-zorro (src/styles/components) cũng ghi vào layer antd, nằm sau CSS gốc.
  */
 @layer theme, base, antd, components, utilities;
 
 @import 'tailwindcss';
 @import 'ng-zorro-antd/ng-zorro-antd.variable.min.css' layer(antd);
 
-/* ---- Theme: dashboard doanh nghiệp (xanh navy) ---- */
-html {
-  --ant-primary-color: #1d4ed8;
-  /* Hover đủ đậm để chữ trắng trên nút chính đạt tương phản AA */
-  --ant-primary-color-hover: #2563eb;
-  --ant-primary-color-active: #1e40af;
-  --ant-primary-color-outline: rgba(29, 78, 216, 0.15);
-  --ant-primary-1: #eff6ff;
-  --ant-primary-2: #dbeafe;
-  --ant-primary-3: #bfdbfe;
-  --ant-primary-4: #93c5fd;
-  --ant-primary-5: #3b82f6;
-  --ant-primary-6: #1d4ed8;
-  --ant-primary-7: #1e40af;
-  --ant-primary-color-deprecated-f-12: rgba(29, 78, 216, 0.12);
-  --ant-primary-color-deprecated-l-35: #dbeafe;
-  --ant-primary-color-active-deprecated-d-02: #dbeafe;
-  /* Đỏ đậm hơn mặc định (#ff4d4f) để chữ đạt tương phản WCAG AA */
-  --ant-error-color: #dc2626;
-  --ant-error-color-hover: #ef4444;
-  --ant-error-color-active: #b91c1c;
+/*
+ * Utility Tailwind theo design token (giá trị đổi theo theme, khai báo trong src/styles/themes):
+ *   bg-page, bg-surface, bg-elevated, bg-subtle, border-line, text-fg, text-fg-muted,
+ *   text-brand / bg-brand, text-on-brand, text-danger.
+ * Tên khác với token gốc (--color-bg-container...) để không sinh vòng lặp var() trỏ vào chính nó.
+ */
+@theme inline {
+  --color-page: var(--color-bg);
+  --color-surface: var(--color-bg-container);
+  --color-elevated: var(--color-bg-elevated);
+  --color-subtle: var(--color-bg-subtle);
+  --color-line: var(--color-border);
+  --color-fg: var(--color-text);
+  --color-fg-muted: var(--color-text-secondary);
+  --color-brand: var(--color-primary);
+  --color-brand-solid: var(--button-primary-bg); /* nền đặc cùng màu nút primary (logo...) */
+  --color-on-brand: var(--color-on-primary);
+  --color-danger: var(--color-error);
 }
 
-body {
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  color: #0f172a;
-}
-
-/* ---- Bố cục: header rộng toàn màn hình, bên dưới là sidebar + nội dung; chỉ vùng bên trong được cuộn ---- */
-.ant-layout.app-shell {
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-}
-.ant-layout.app-body {
-  min-height: 0;
-}
-.ant-layout-content.app-content {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-.ant-layout {
-  background: #f1f5f9;
-}
-
-/* ---- Sidebar trắng dạng card, cách header và mép màn hình giống card nội dung (24px) ---- */
-.ant-layout-sider.app-sider {
-  margin: 24px 0 24px 24px;
-  overflow: hidden;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
-}
-.app-sider .ant-menu.ant-menu-inline,
-.app-sider .ant-menu.ant-menu-inline-collapsed {
-  border-right: 0;
-}
-.app-sider .ant-menu-item {
-  margin: 4px 8px;
-  width: calc(100% - 16px);
-  border-radius: 6px;
-  color: #334155;
-}
-.app-sider .ant-menu-item::after {
-  display: none;
-}
-.app-sider .ant-menu-item.ant-menu-item-selected {
-  background: var(--ant-primary-1);
-  color: var(--ant-primary-color);
-  font-weight: 500;
-}
-/* Thu gọn: item vuông 48px nằm giữa sider 80px, icon canh giữa */
-.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item {
-  width: 48px;
-  margin: 4px auto;
-  padding: 0 !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content > span {
-  display: none;
-}
-.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content nz-icon {
-  margin: 0;
-  font-size: 18px;
-}
-.ant-layout-header.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.ant-layout-header.app-header {
-  height: 56px;
-  line-height: 56px;
-  padding: 0 24px;
-  background: #fff;
-  border-bottom: 1px solid #e2e8f0;
-}
-.ant-layout-footer.app-footer {
-  display: flex;
-  justify-content: center;
-  flex: none;
-  padding: 0 24px 16px;
-  background: transparent;
-  color: #475569;
-}
-
-/* ---- Bo góc mềm hơn mặc định (2px) ---- */
-.ant-btn,
-.ant-input,
-.ant-input-affix-wrapper,
-.ant-input-number,
-.ant-input-number-group-wrapper,
-.ant-select:not(.ant-select-customize-input) .ant-select-selector,
-.ant-picker {
-  border-radius: 6px;
-}
-/* Ô nhập số mặc định rộng cố định 90px, cho giãn theo ô chứa */
-.ant-input-number,
-.ant-input-number-group-wrapper {
-  width: 100%;
-}
-.ant-modal-content {
-  border-radius: 10px;
-  overflow: hidden;
-}
-.ant-modal-header {
-  border-radius: 10px 10px 0 0;
-}
-.ant-tag {
-  border-radius: 999px;
-  padding: 0 10px;
-}
-.ant-popover-inner,
-.ant-dropdown-menu {
-  border-radius: 8px;
-}
-
-/* ---- Breadcrumb: tăng tương phản (WCAG AA) ---- */
-.ant-breadcrumb,
-.ant-breadcrumb-link,
-.ant-breadcrumb-separator {
-  color: #475569;
-}
-.ant-breadcrumb > span:last-child .ant-breadcrumb-link {
-  color: #0f172a;
-}
-
-/* ---- Bảng ---- */
-.ant-table-wrapper .ant-table-thead > tr > th {
-  background: #f8fafc;
-  color: #475569;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-.ant-table-wrapper .ant-table-tbody > tr:hover > td {
-  background: #f8fafc;
-}
-
-/* ---- Bảng dùng chung: chiếm phần chiều cao còn lại; bảng (có viền) chỉ cao theo nội dung và tự cuộn
-   khi vượt chỗ trống; header bảng dính trên, phân trang luôn ở đáy ---- */
-.ant-table-wrapper.data-table,
-.data-table .ant-spin-nested-loading,
-.data-table .ant-spin-container,
-.data-table .ant-table,
-.data-table .ant-table-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-.ant-table-wrapper.data-table {
-  flex: 1 1 auto;
-  min-height: 14rem;
-}
-.data-table .ant-spin-nested-loading,
-.data-table .ant-spin-container {
-  flex: 1 1 auto;
-}
-/* Không giãn theo chiều cao để khung viền không kéo dài xuống dưới các dòng dữ liệu */
-.data-table .ant-table,
-.data-table .ant-table-container {
-  flex: 0 1 auto;
-}
-.data-table .ant-table-content {
-  flex: 0 1 auto;
-  min-height: 0;
-  overflow: auto;
-}
-.data-table .ant-table-thead > tr > th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-/* Ô tiêu đề của cột cố định: dính cả trên lẫn trái/phải nên phải nằm trên các ô cố định của thân bảng */
-.data-table .ant-table-thead > tr > th:is(.ant-table-cell-fix-left, .ant-table-cell-fix-right) {
-  z-index: 3;
-}
-.data-table .ant-table-pagination {
-  flex: none;
-  margin-top: auto;
-  padding-top: 16px;
-}
-
-/* ---- Avatar chữ cái đầu ---- */
-.ant-avatar.avatar-soft {
-  background: var(--ant-primary-2);
-  color: var(--ant-primary-color);
-  font-weight: 600;
-}
-
-/* ---- Field custom của crud-form: control khai báo trong trang không nhận trạng thái lỗi từ nz-form-control
-   (khác injector), nên tô viền lỗi theo form item để giống các field có sẵn ---- */
-.crud-cell
-  .ant-form-item-has-error
-  :is(.ant-input, .ant-input-affix-wrapper, .ant-input-number, .ant-picker, .ant-select:not(.ant-select-customize-input) .ant-select-selector) {
-  border-color: var(--ant-error-color);
-}
-
-/* ---- Modal form CRUD: khung vừa viewport, chỉ phần field cuộn, footer luôn hiển thị ---- */
-.crud-form-modal .ant-modal-content {
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100dvh - 48px);
-}
-.crud-form-modal .ant-modal-body {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-}
-
-/* ---- Popover tìm kiếm nâng cao ---- */
-.advanced-search-popover .ant-popover-title {
-  font-weight: 600;
-}
+/* Biến thể dark: của Tailwind theo theme của app (<html data-theme="dark">) thay vì theo hệ điều hành. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));

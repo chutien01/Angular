@@ -1,0 +1,29 @@
+@use '../abstracts/mixins' as m;
+
+// Chữ và nền cơ bản của trang, lấy từ token.
+@include m.ng-zorro-override {
+  body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height);
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-text);
+  }
+
+  a {
+    color: var(--color-primary);
+  }
+
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+}

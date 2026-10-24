@@ -1,0 +1,97 @@
+// Bố cục khung trang (chuyển nguyên từ src/styles.css, thay mã màu cứng bằng token):
+// header rộng toàn màn hình, bên dưới là sidebar dạng card + nội dung, footer rộng toàn màn hình.
+// Chỉ vùng bên trong được cuộn. Các rule này để ngoài layer (ưu tiên cao nhất) như trước đây.
+
+.ant-layout {
+  background: var(--color-bg);
+}
+
+.ant-layout.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.ant-layout.app-body {
+  min-height: 0;
+}
+
+.ant-layout-content.app-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+// ---- Header ----
+.ant-layout-header.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--layout-header-height);
+  line-height: var(--layout-header-height);
+  padding: 0 var(--space-6);
+  color: var(--color-text);
+  background: var(--layout-header-bg);
+  border-bottom: 1px solid var(--layout-border);
+}
+
+// ---- Footer ----
+.ant-layout-footer.app-footer {
+  display: flex;
+  justify-content: center;
+  flex: none;
+  padding: 0 var(--space-6) var(--space-4);
+  color: var(--layout-footer-color);
+  background: transparent;
+}
+
+// ---- Sidebar dạng card, cách header và mép màn hình giống card nội dung ----
+.ant-layout-sider.app-sider {
+  margin: var(--space-6) 0 var(--space-6) var(--space-6);
+  overflow: hidden;
+  background: var(--layout-sider-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.app-sider .ant-menu.ant-menu-inline,
+.app-sider .ant-menu.ant-menu-inline-collapsed {
+  border-right: 0;
+}
+
+.app-sider .ant-menu-item {
+  margin: var(--space-1) var(--space-2);
+  width: calc(100% - 2 * var(--space-2));
+}
+
+.app-sider .ant-menu-item::after {
+  display: none;
+}
+
+// Thu gọn: item vuông nằm giữa sider 80px, icon canh giữa
+.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item {
+  width: var(--menu-item-height);
+  margin: var(--space-1) auto;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content > span {
+  display: none;
+}
+
+.app-sider .ant-menu.ant-menu-inline-collapsed .ant-menu-item .ant-menu-title-content nz-icon {
+  margin: 0;
+  font-size: var(--menu-icon-size-collapsed);
+}

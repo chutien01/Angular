@@ -1,7 +1,7 @@
 <!-- Ô lọc dùng chung cho thanh lọc (scope "bar") và popup nâng cao (scope "modal") -->
 <ng-template #field let-filter let-values="values" let-scope="scope">
   <label
-    [class]="scope === 'modal' ? 'mb-1 block text-sm font-medium text-slate-700' : 'sr-only'"
+    [class]="scope === 'modal' ? 'mb-1 block text-sm font-medium text-fg' : 'sr-only'"
     [attr.for]="scope + '-filter-' + filter.key"
   >
     {{ filter.label }}
@@ -164,12 +164,12 @@
                     <div>
                       <div
                         [class.font-medium]="cell.initials || cell.sub"
-                        [class.text-slate-900]="cell.sub"
+                        [class.text-fg]="cell.sub"
                       >
                         {{ cell.text }}
                       </div>
                       @if (cell.sub) {
-                        <div class="text-xs text-slate-500">{{ cell.sub }}</div>
+                        <div class="text-xs text-fg-muted">{{ cell.sub }}</div>
                       }
                     </div>
                   </div>
@@ -220,7 +220,7 @@
         </div>
       }
     </div>
-    <div class="mt-3 flex justify-end gap-2 border-t border-slate-200 pt-3">
+    <div class="mt-3 flex justify-end gap-2 border-t border-line pt-3">
       <button nz-button (click)="cancelAdvanced()">Hủy</button>
       <button nz-button nzType="primary" (click)="searchAdvanced()">Tìm kiếm</button>
     </div>

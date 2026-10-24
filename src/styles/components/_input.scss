@@ -1,0 +1,127 @@
+@use '../abstracts/mixins' as m;
+
+// Input, Textarea, InputNumber, input có prefix/suffix (affix) ← token --input-*.
+// Màu viền hover/focus mặc định của ng-zorro đã đi qua --ant-primary-color-hover (cầu nối);
+// ở đây gán lại bằng token riêng của input để có thể cấu hình độc lập với màu primary.
+@include m.ng-zorro-override {
+  .ant-input,
+  .ant-input-affix-wrapper,
+  .ant-input-number {
+    font-size: var(--input-font-size);
+    color: var(--input-color);
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    border-radius: var(--input-radius);
+  }
+
+  .ant-input {
+    padding-inline: var(--input-padding-x);
+  }
+
+  // input đứng riêng: chiều cao gồm cả viền (box-sizing: border-box)
+  input.ant-input {
+    height: var(--input-height-md);
+  }
+
+  input.ant-input-lg {
+    height: var(--input-height-lg);
+  }
+
+  input.ant-input-sm {
+    height: var(--input-height-sm);
+  }
+
+  // input nằm trong khung có viền (affix / input-number): trừ phần viền của khung
+  .ant-input-affix-wrapper > input.ant-input {
+    height: auto;
+    padding-inline: 0;
+    background: transparent;
+  }
+
+  .ant-input-number-input {
+    height: calc(var(--input-height-md) - 2px);
+  }
+
+  .ant-input-number-lg .ant-input-number-input {
+    height: calc(var(--input-height-lg) - 2px);
+  }
+
+  .ant-input-number-sm .ant-input-number-input {
+    height: calc(var(--input-height-sm) - 2px);
+  }
+
+  // Ô nhập số giãn theo ô chứa (mặc định ng-zorro cố định 90px)
+  .ant-input-number,
+  .ant-input-number-group-wrapper {
+    width: 100%;
+  }
+
+  .ant-input-number-input {
+    color: var(--input-color);
+    padding-inline: var(--input-padding-x);
+  }
+
+  .ant-input-number-handler-wrap {
+    background: var(--input-bg);
+  }
+
+  .ant-input-number-handler {
+    color: var(--color-text-secondary);
+    border-color: var(--input-border);
+  }
+
+  .ant-input::placeholder,
+  .ant-input-number-input::placeholder,
+  .ant-input-affix-wrapper input::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  // Hover
+  .ant-input:hover,
+  .ant-input-affix-wrapper:hover,
+  .ant-input-number:hover {
+    border-color: var(--input-border-hover);
+  }
+
+  // Focus
+  .ant-input:focus,
+  .ant-input-focused,
+  .ant-input-affix-wrapper:focus,
+  .ant-input-affix-wrapper-focused,
+  .ant-input-number:focus,
+  .ant-input-number-focused {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+  }
+
+  // Lỗi
+  .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+  .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover,
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-number-status-error:not(.ant-input-number-disabled):not(.ant-input-number-borderless).ant-input-number {
+    background-color: var(--input-bg);
+    border-color: var(--input-border-error);
+  }
+
+  // Disabled
+  .ant-input-disabled,
+  .ant-input[disabled],
+  .ant-input-disabled:hover,
+  .ant-input[disabled]:hover,
+  .ant-input-affix-wrapper-disabled,
+  .ant-input-affix-wrapper-disabled:hover,
+  .ant-input-number-disabled {
+    color: var(--input-disabled-color);
+    background-color: var(--input-disabled-bg);
+    border-color: var(--input-border);
+  }
+
+  // Nút xóa nội dung
+  .ant-input-clear-icon {
+    color: var(--color-text-placeholder);
+  }
+
+  .ant-input-clear-icon:hover {
+    color: var(--color-text-secondary);
+  }
+}

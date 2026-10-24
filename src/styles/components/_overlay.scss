@@ -1,0 +1,133 @@
+@use '../abstracts/mixins' as m;
+
+// Các thành phần nổi (render trong .cdk-overlay-container dưới <body>, nên vẫn nhận token của <html>):
+// Modal (+ modal xác nhận), Popover, Dropdown, Tooltip, Message ← token --overlay-*, --modal-*, ...
+@include m.ng-zorro-override {
+  // Modal
+  .ant-modal {
+    color: var(--overlay-color);
+  }
+
+  .ant-modal-content {
+    background-color: var(--overlay-bg);
+    border-radius: var(--modal-radius);
+    box-shadow: var(--overlay-shadow);
+    overflow: hidden;
+  }
+
+  .ant-modal-header {
+    color: var(--overlay-color);
+    background: var(--overlay-bg);
+    border-bottom-color: var(--overlay-border);
+    border-radius: var(--modal-radius) var(--modal-radius) 0 0;
+  }
+
+  .ant-modal-title,
+  .ant-modal-confirm-body .ant-modal-confirm-title {
+    color: var(--overlay-color);
+  }
+
+  .ant-modal-confirm-body .ant-modal-confirm-content {
+    color: var(--color-text-secondary);
+  }
+
+  .ant-modal-footer {
+    border-top-color: var(--overlay-border);
+  }
+
+  .ant-modal-close {
+    color: var(--color-text-secondary);
+  }
+
+  .ant-modal-close:hover,
+  .ant-modal-close:focus {
+    color: var(--overlay-color);
+  }
+
+  // Popover
+  .ant-popover-inner {
+    background-color: var(--overlay-bg);
+    border-radius: var(--popover-radius);
+    box-shadow: var(--overlay-shadow);
+  }
+
+  .ant-popover-title {
+    color: var(--overlay-color);
+    border-bottom-color: var(--overlay-border);
+  }
+
+  .ant-popover-inner-content {
+    color: var(--overlay-color);
+  }
+
+  .ant-popover-arrow-content,
+  .ant-popover-arrow-content::before {
+    background: var(--overlay-bg);
+    --antd-arrow-background-color: var(--overlay-bg);
+  }
+
+  // Dropdown
+  .ant-dropdown-menu {
+    background-color: var(--overlay-bg);
+    border-radius: var(--dropdown-radius);
+    box-shadow: var(--overlay-shadow);
+  }
+
+  .ant-dropdown-menu-item {
+    color: var(--overlay-color);
+  }
+
+  .ant-dropdown-menu-item:hover,
+  .ant-dropdown-menu-item-active {
+    background-color: var(--overlay-item-hover-bg);
+  }
+
+  .ant-dropdown-menu-item-divider {
+    background-color: var(--overlay-border);
+  }
+
+  .ant-dropdown-menu-item-danger {
+    color: var(--color-error);
+  }
+
+  .ant-dropdown-menu-item-danger:hover {
+    color: var(--color-on-primary);
+    background-color: var(--color-error-active);
+  }
+
+  // Tooltip
+  .ant-tooltip-inner {
+    color: var(--tooltip-color);
+    background-color: var(--tooltip-bg);
+  }
+
+  .ant-tooltip-arrow-content,
+  .ant-tooltip-arrow-content::before {
+    background: var(--tooltip-bg);
+    --antd-arrow-background-color: var(--tooltip-bg);
+  }
+
+  // Message (thông báo góc trên)
+  .ant-message-notice-content {
+    color: var(--overlay-color);
+    background: var(--overlay-bg);
+    box-shadow: var(--overlay-shadow);
+  }
+}
+
+// Bố cục modal form CRUD: khung vừa viewport, chỉ phần field cuộn, footer luôn hiển thị.
+.crud-form-modal .ant-modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - 48px);
+}
+
+.crud-form-modal .ant-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.advanced-search-popover .ant-popover-title {
+  font-weight: var(--font-weight-semibold);
+}

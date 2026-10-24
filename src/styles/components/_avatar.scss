@@ -1,0 +1,19 @@
+@use '../abstracts/mixins' as m;
+
+// Avatar (nz-avatar) và Badge (nz-badge) ← token --avatar-*, --badge-*.
+@include m.ng-zorro-override {
+  // Avatar chữ cái đầu dạng nền nhạt: <nz-avatar class="avatar-soft">
+  .ant-avatar.avatar-soft {
+    color: var(--avatar-soft-color);
+    font-weight: var(--font-weight-semibold);
+    background: var(--avatar-soft-bg);
+  }
+
+  .ant-badge-status-text {
+    color: var(--badge-text-color);
+  }
+
+  .ant-badge-count {
+    box-shadow: 0 0 0 1px var(--color-bg-container);
+  }
+}
