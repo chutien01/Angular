@@ -1,3 +1,5 @@
+> **Read [RULE.md](RULE.md) first.** It defines this project's structure, shared components, theming rules and verification workflow. If anything below conflicts with RULE.md, RULE.md wins.
+
 You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
 
 ## TypeScript Best Practices
